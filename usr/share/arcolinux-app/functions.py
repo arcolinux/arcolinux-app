@@ -8,11 +8,11 @@ import subprocess
 from pathlib import Path
 
 base_dir = os.path.dirname(os.path.realpath(__file__))
-working_dir = ''.join([str(Path(__file__).parents[2]),
-                       "/share/hefftor-welcome-app/"])
-proc = subprocess.Popen(["who"], stdout=subprocess.PIPE, shell=True, executable='/bin/bash') # noqa
+working_dir = "".join([str(Path(__file__).parents[2]), "/share/hefftor-welcome-app/"])
+proc = subprocess.Popen(
+    ["who"], stdout=subprocess.PIPE, shell=True, executable="/bin/bash"
+)  # noqa
 users = proc.stdout.readlines()[0].decode().strip().split(" ")[0]
-print(users)
 DEBUG = False
 
 if DEBUG:
@@ -23,12 +23,12 @@ else:
     liveuser = "liveuser"
 
 fs = [
-    'btrfs',
-    'xfs',
-    'jfs',
-    'reiser',
-    'f2fs',
-    'ext4',
+    "btrfs",
+    "xfs",
+    "jfs",
+    "reiser",
+    "f2fs",
+    "ext4",
 ]
 
 message = "The ArcoLinux Calamares tool is only for the live ISO"  # noqa
@@ -47,7 +47,7 @@ def set_config(string):
 
     pos = __get_position(lines, "defaultFileSystemType:")
 
-    lines[pos] = "defaultFileSystemType:  \"" + string + "\"\n"
+    lines[pos] = 'defaultFileSystemType:  "' + string + '"\n'
 
     with open(config, "w") as f:
         f.writelines(lines)
