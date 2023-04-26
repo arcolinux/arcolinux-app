@@ -4,7 +4,7 @@
   <vendor>ArcoLinux</vendor>
   <vendor_url>https://arcolinux.info/</vendor_url>
   <icon_name>package-x-generic</icon_name>
-  <action id="org.arcolinux.pkexec.calamares-tool">
+  <action id="org.arcolinux.pkexec.application-app">
     <description>ArcoLinux App</description>
     <message>Authentication is required to change your own user data</message>
     <defaults>
@@ -12,7 +12,7 @@
       <allow_inactive>auth_admin</allow_inactive>
       <allow_active>auth_admin</allow_active>
     </defaults>
-    <annotate key="org.freedesktop.policykit.exec.path">/usr/share/arcolinux-app/arcolinux-app.py</annotate>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/share/arcolinux-app/arcolinux-application.py</annotate>
     <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
   </action>
 </policyconfig>
