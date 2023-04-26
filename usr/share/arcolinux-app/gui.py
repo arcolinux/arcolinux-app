@@ -10,25 +10,13 @@ def GUI(self, Gtk, GdkPixbuf, fn):
 
     vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
+    hbox_logo = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-    hbox3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-    hbox4 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-    # hbox5 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-    # hbox6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-    # hbox7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-    # hbox8 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-
-    # vbox2 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-
-    vbox.pack_start(hbox1, True, True, 0)
-    vbox.pack_start(hbox2, True, True, 0)
-    vbox.pack_start(hbox3, True, True, 0)
-    vbox.pack_start(hbox4, True, True, 0)
-    self.add(vbox)
+    hbox_buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
     # ======================================================================
-    #                           LOGO
+    #                           HBOX_LOGO
     # ======================================================================
 
     img_pb = GdkPixbuf.Pixbuf().new_from_file_at_size(
@@ -39,10 +27,10 @@ def GUI(self, Gtk, GdkPixbuf, fn):
         235,
     )  # noqa
     img = Gtk.Image().new_from_pixbuf(img_pb)
-    hbox4.pack_start(img, True, False, 0)
+    hbox_logo.pack_start(img, True, False, 0)
 
     # ======================================================================
-    #                           BOX 1
+    #                           HBOX 1
     # ======================================================================
 
     lbl1 = Gtk.Label(label="Select your preferred filesystem: ")
@@ -57,19 +45,9 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox1.pack_end(self.fileSystem, False, False, 0)
 
     # ======================================================================
-    #                       BUTTONS
+    #                            HBOX2
     # ======================================================================
-    btnCancel = Gtk.Button(label="Close")
-    btnCancel.connect("clicked", self.on_close_clicked)
-    btnOK = Gtk.Button(label="Save")
-    btnOK.connect("clicked", self.on_save_clicked)
 
-    hbox2.pack_end(btnCancel, False, False, 0)
-    hbox2.pack_end(btnOK, False, False, 0)
-
-    # ======================================================================
-    #                       MESSAGE
-    # ======================================================================
     lblmessage = Gtk.Label()
     lblmessage.set_justify(Gtk.Justification.CENTER)
     lblmessage.set_line_wrap(True)
@@ -77,18 +55,30 @@ def GUI(self, Gtk, GdkPixbuf, fn):
         '<span foreground="orange" size="xx-large">' + fn.message + "</span>"
     )  # noqa
 
-    hbox3.pack_start(lblmessage, True, False, 0)
+    hbox2.pack_start(lblmessage, True, False, 0)
+
+    # ======================================================================
+    #                       HBOX_BUTTONS
+    # ======================================================================
+
+    btnCancel = Gtk.Button(label="Close")
+    btnCancel.connect("clicked", self.on_close_clicked)
+    btnOK = Gtk.Button(label="Save")
+    btnOK.connect("clicked", self.on_save_clicked)
+
+    hbox_buttons.pack_end(btnCancel, False, False, 0)
+    hbox_buttons.pack_end(btnOK, False, False, 0)
+
     # ======================================================================
     #                   PACK TO WINDOW
     # ======================================================================
 
     scrolledWindow = Gtk.ScrolledWindow()
+    self.add(scrolledWindow)
 
-    vbox.pack_start(hbox4, False, False, 20)  # LOGO
+    vbox.pack_start(hbox_logo, False, False, 20)  # LOGO
     vbox.pack_start(hbox1, False, False, 0)  # Options
-    vbox.pack_start(hbox3, True, True, 20)  # Message
-    btnCancel.set_sensitive(True)
-    btnOK.set_sensitive(True)
-    self.fileSystem.set_sensitive(True)
-    vbox.pack_end(hbox2, False, False, 7)  # Buttons
+    vbox.pack_start(hbox2, True, True, 20)  # Message
+    vbox.pack_end(hbox_buttons, False, False, 7)  # Buttons
+
     scrolledWindow.add(vbox)
