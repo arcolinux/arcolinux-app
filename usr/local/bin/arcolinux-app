@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+pkexec /usr/share/arcolinux-app/arcolinux-application.py
