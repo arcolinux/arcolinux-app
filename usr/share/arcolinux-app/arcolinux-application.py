@@ -2,11 +2,14 @@
 # =================================================================
 # =                  Author: Erik Dubois                          =
 # =================================================================
+
 import gi
 import gui
+import splash
 import functions as fn
 
 gi.require_version("Gtk", "3.0")
+
 from gi.repository import Gtk, GdkPixbuf  # noqa
 
 print("---------------------------------------------------------------------------")
@@ -24,8 +27,9 @@ class Main(Gtk.Window):
         self.set_default_size(560, 250)
         self.set_icon_from_file(fn.os.path.join(fn.base_dir, "images/arcolinux.png"))
         self.set_position(Gtk.WindowPosition.CENTER)
-
+        splScr = splash.SplashScreen()
         gui.GUI(self, Gtk, GdkPixbuf, fn)
+        splScr.destroy()
 
     def on_close_clicked(self, widget):
         Gtk.main_quit()
