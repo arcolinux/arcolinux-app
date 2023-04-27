@@ -3,9 +3,17 @@
 # =================================================================
 
 import os
-import threading  # noqa
 import subprocess
 from pathlib import Path
+from distro import id
+
+
+# =====================================================
+#              BEGIN DECLARATION OF VARIABLES
+# =====================================================
+
+distr = id()
+print(distr)
 
 base_dir = os.path.dirname(os.path.realpath(__file__))
 working_dir = "".join([str(Path(__file__).parents[2]), "/share/hefftor-welcome-app/"])

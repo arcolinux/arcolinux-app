@@ -9,6 +9,13 @@ import functions as fn
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GdkPixbuf  # noqa
 
+print("---------------------------------------------------------------------------")
+print("[INFO] : pkgver = pkgversion")
+print("[INFO] : pkgrel = pkgrelease")
+print("---------------------------------------------------------------------------")
+print("[INFO] : Distro = " + fn.distr)
+print("---------------------------------------------------------------------------")
+
 
 class Main(Gtk.Window):
     def __init__(self):
