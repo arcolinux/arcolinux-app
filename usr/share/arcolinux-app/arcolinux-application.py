@@ -7,6 +7,7 @@ import gi
 import gui
 import splash
 import functions as fn
+from time import sleep
 
 gi.require_version("Gtk", "3.0")
 
@@ -27,9 +28,15 @@ class Main(Gtk.Window):
         self.set_default_size(560, 250)
         self.set_icon_from_file(fn.os.path.join(fn.base_dir, "images/arcolinux.png"))
         self.set_position(Gtk.WindowPosition.CENTER)
-        splScr = splash.SplashScreen()
-        gui.GUI(self, Gtk, GdkPixbuf, fn)
+
+        # splash screen
+        splScr = splash.splashScreen()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        sleep(1)
         splScr.destroy()
+
+        gui.GUI(self, Gtk, GdkPixbuf, fn)
 
     def on_close_clicked(self, widget):
         Gtk.main_quit()

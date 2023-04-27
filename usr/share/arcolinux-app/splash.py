@@ -13,9 +13,8 @@ from gi.repository import Gtk, GdkPixbuf
 base_dir = fn.path.dirname(fn.path.realpath(__file__))
 
 
-class SplashScreen(Gtk.Window):
+class splashScreen(Gtk.Window):
     def __init__(self):
-        print("erik")
         Gtk.Window.__init__(self, Gtk.WindowType.POPUP, title="")
         self.set_decorated(False)
         self.set_resizable(False)
