@@ -1,5 +1,5 @@
 # =================================================================
-# =                  Author: Brad Heffernan                       =
+# =                  Author: Erik Dubois                          =
 # =================================================================
 
 
@@ -36,10 +36,6 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     lbl1 = Gtk.Label(label="Select your preferred filesystem: ")
     self.fileSystem = Gtk.ComboBoxText()
     self.fileSystem.set_size_request(280, 0)
-
-    for i in range(len(fn.fs)):
-        self.fileSystem.append_text(fn.fs[i])
-    self.fileSystem.set_active(0)
 
     hbox1.pack_start(lbl1, False, False, 0)
     hbox1.pack_end(self.fileSystem, False, False, 0)
