@@ -72,6 +72,10 @@ class Main(Gtk.Window):
         fn.permissions(destination)
         print("[INFO] : Check your home directory for the iso")
 
+        # making sure we start with a clean slate
+        fn.remove_dir(self, fn.base_dir + "/work")
+        fn.remove_dir(self, "/root/work")
+
     def on_fix_arch_clicked(self, widget):
         print("[INFO] : Let's fix the keys of Arch Linux")
         command = fn.base_dir + "/scripts/fixkey"
