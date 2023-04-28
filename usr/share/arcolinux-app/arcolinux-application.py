@@ -52,6 +52,8 @@ class Main(Gtk.Window):
         print("[INFO] : Let's build an Arch Linux iso")
         package = "archiso"
         fn.install_package(self, package)
+        command = "sudo mkarchiso -v /usr/share/archiso/configs/releng/"
+        fn.run_command(self, command)
 
     def on_fix_arch_clicked(self, widget):
         print("[INFO] : Let's fix the keys of Arch Linux")

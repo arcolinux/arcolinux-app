@@ -164,6 +164,20 @@ def run_script_alacritty(self, command):
         print(error)
 
 
+def run_command(self, command):
+    print("[INFO] : Applying this command")
+    print("[INFO] : " + command)
+    try:
+        subprocess.call(
+            command.split(" "),
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+    except Exception as error:
+        print(error)
+
+
 # =====================================================
 #               END GLOBAL FUNCTIONS
 # =====================================================
