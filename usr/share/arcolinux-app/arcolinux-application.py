@@ -25,7 +25,7 @@ class Main(Gtk.Window):
     def __init__(self):
         super(Main, self).__init__(title="ArcoLinux App")
         self.set_border_width(10)
-        self.set_default_size(560, 250)
+        self.set_default_size(650, 400)
         self.set_icon_from_file(fn.os.path.join(fn.base_dir, "images/arcolinux.png"))
         self.set_position(Gtk.WindowPosition.CENTER)
 
