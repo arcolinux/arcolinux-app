@@ -48,6 +48,25 @@ class Main(Gtk.Window):
         t.daemon = True
         t.start()
 
+    def on_create_arch_clicked(self, widget):
+        print("[INFO] : Let's build an Arch Linux iso")
+        package = "archiso"
+        fn.install_package(self, package)
+
+    def on_fix_arch_clicked(self, widget):
+        print("[INFO] : Let's fix the keys of Arch Linux")
+        command = fn.base_dir + "/scripts/fixkey"
+        package = "alacritty"
+        fn.install_package(self, package)
+        fn.run_script_alacritty(self, command)
+
+    def on_arch_server_clicked(self, widget):
+        print("[INFO] : Let's change the Arch Linux mirrors")
+        command = fn.base_dir + "/scripts/best-arch-servers"
+        package = "alacritty"
+        fn.install_package(self, package)
+        fn.run_script(self, command)
+
 
 if __name__ == "__main__":
     w = Main()

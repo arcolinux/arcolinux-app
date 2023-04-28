@@ -117,6 +117,53 @@ def check_package_installed(package):
         return False
 
 
+# install package
+def install_package(self, package):
+    command = "pacman -S " + package + " --noconfirm --needed"
+    # if more than one package - checf fails and will install
+    if check_package_installed(package):
+        print(
+            "[INFO] : The package " + package + " is already installed - nothing to do"
+        )
+    else:
+        try:
+            print("[INFO] : Applying this command - " + command)
+            subprocess.call(
+                command.split(" "),
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+            print("[INFO] : The package " + package + " is now installed")
+        except Exception as error:
+            print(error)
+
+
+def run_script(self, command):
+    print("[INFO] : Applying this command")
+    print("[INFO] : " + command)
+    try:
+        subprocess.call(
+            command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
+    except Exception as error:
+        print(error)
+
+
+def run_script_alacritty(self, command):
+    print("[INFO] : Applying this command")
+    print("[INFO] : " + command)
+    try:
+        subprocess.call(
+            "alacritty --hold -e" + command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+    except Exception as error:
+        print(error)
+
+
 # =====================================================
 #               END GLOBAL FUNCTIONS
 # =====================================================
