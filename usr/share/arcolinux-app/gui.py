@@ -13,6 +13,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox_logo = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    # hbox3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
     # ======================================================================
@@ -33,25 +34,36 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     #                           HBOX 1
     # ======================================================================
 
-    lbl1 = Gtk.Label(label="Select your preferred filesystem: ")
-    self.fileSystem = Gtk.ComboBoxText()
-    self.fileSystem.set_size_request(280, 0)
+    lbl_create_arch = Gtk.Label(label="Create your personal Arch Linux iso: ")
+    self.create_arch = Gtk.Button(label="Create")
+    self.create_arch.set_size_request(280, 0)
 
-    hbox1.pack_start(lbl1, False, False, 0)
-    hbox1.pack_end(self.fileSystem, False, False, 0)
+    hbox1.pack_start(lbl_create_arch, False, False, 0)
+    hbox1.pack_end(self.create_arch, False, False, 0)
 
     # ======================================================================
-    #                            HBOX2
+    #                           HBOX 2
     # ======================================================================
 
-    lblmessage = Gtk.Label()
-    lblmessage.set_justify(Gtk.Justification.CENTER)
-    lblmessage.set_line_wrap(True)
-    lblmessage.set_markup(
-        '<span foreground="orange" size="xx-large">' + fn.message + "</span>"
-    )  # noqa
+    lbl_create_arch = Gtk.Label(label="Create your personal Arch Linux iso: ")
+    self.create_arch = Gtk.Button(label="Create")
+    self.create_arch.set_size_request(280, 0)
 
-    hbox2.pack_start(lblmessage, True, False, 0)
+    hbox2.pack_start(lbl_create_arch, False, False, 0)
+    hbox2.pack_end(self.create_arch, False, False, 0)
+
+    # # ======================================================================
+    # #                            HBOX2
+    # # ======================================================================
+
+    # lblmessage = Gtk.Label()
+    # lblmessage.set_justify(Gtk.Justification.CENTER)
+    # lblmessage.set_line_wrap(True)
+    # lblmessage.set_markup(
+    #     '<span foreground="orange" size="xx-large">' + fn.message + "</span>"
+    # )  # noqa
+
+    # hbox2.pack_start(lblmessage, True, False, 0)
 
     # ======================================================================
     #                       HBOX_BUTTONS
@@ -73,8 +85,8 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     self.add(scrolledWindow)
 
     vbox.pack_start(hbox_logo, False, False, 20)  # LOGO
-    vbox.pack_start(hbox1, False, False, 0)  # Options
-    vbox.pack_start(hbox2, True, True, 20)  # Message
+    vbox.pack_start(hbox1, False, False, 0)
+    vbox.pack_start(hbox2, False, False, 20)
     vbox.pack_end(hbox_buttons, False, False, 7)  # Buttons
 
     scrolledWindow.add(vbox)
