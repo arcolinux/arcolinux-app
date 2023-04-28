@@ -56,6 +56,7 @@ class Main(Gtk.Window):
 
         # making sure we start with a clean slate
         fn.remove_dir(self, fn.base_dir + "/work")
+        fn.remove_dir(self, "/root/work")
 
         # starting the build script
         command = "mkarchiso -v -o " + fn.home + " /usr/share/archiso/configs/releng/"
@@ -69,6 +70,7 @@ class Main(Gtk.Window):
         iso_name = "/archlinux-" + year + "." + month + "." + day + "-x86_64.iso"
         destination = fn.home + iso_name
         fn.permissions(destination)
+        print("[INFO] : Check your home directory for the iso")
 
     def on_fix_arch_clicked(self, widget):
         print("[INFO] : Let's fix the keys of Arch Linux")
