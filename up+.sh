@@ -34,6 +34,10 @@
 echo "Checking for newer files online first"
 git pull
 
+if [ -d /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/work/ ]; then
+	sudo rm -r /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/work/
+fi
+
 # Below command will backup everything inside the project folder
 git add --all .
 

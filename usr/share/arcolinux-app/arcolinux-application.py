@@ -50,10 +50,25 @@ class Main(Gtk.Window):
 
     def on_create_arch_clicked(self, widget):
         print("[INFO] : Let's build an Arch Linux iso")
+        # installing archiso if needed
         package = "archiso"
         fn.install_package(self, package)
-        command = "sudo mkarchiso -v /usr/share/archiso/configs/releng/ -o " + fn.home
+
+        # making sure we start with a clean slate
+        fn.remove_dir(self, fn.base_dir + "/work")
+
+        # starting the build script
+        command = "mkarchiso -v -o " + fn.home + " /usr/share/archiso/configs/releng/"
         fn.run_command(self, command)
+
+        # changing permission
+        x = fn.datetime.datetime.now()
+        year = str(x.year)
+        month = str(x.strftime("%m"))
+        day = str(x.strftime("%d"))
+        iso_name = "/archlinux-" + year + "." + month + "." + day + "-x86_64.iso"
+        destination = fn.home + iso_name
+        fn.permissions(destination)
 
     def on_fix_arch_clicked(self, widget):
         print("[INFO] : Let's fix the keys of Arch Linux")

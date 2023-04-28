@@ -5,6 +5,8 @@
 import os
 import subprocess
 import psutil
+import shutil
+import datetime
 from pathlib import Path
 from distro import id
 from os import getlogin, path, mkdir, rmdir
@@ -174,6 +176,39 @@ def run_command(self, command):
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
         )
+    except Exception as error:
+        print(error)
+
+
+# check if path exists
+def path_check(path):
+    if os.path.isdir(path):
+        return True
+    return False
+
+
+def remove_dir(self, directory):
+    if path_check(directory):
+        try:
+            shutil.rmtree(directory)
+        except Exception as error:
+            print(error)
+
+
+def permissions(dst):
+    try:
+        groups = subprocess.run(
+            ["sh", "-c", "id " + sudo_username],
+            check=True,
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        for x in groups.stdout.decode().split(" "):
+            if "gid" in x:
+                g = x.split("(")[1]
+                group = g.replace(")", "").strip()
+        subprocess.call(["chown", "-R", sudo_username + ":" + group, dst], shell=False)
     except Exception as error:
         print(error)
 
