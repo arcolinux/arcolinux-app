@@ -90,6 +90,10 @@ class Main(Gtk.Window):
         fn.install_package(self, package)
         fn.run_script(self, command)
 
+    def on_arco_key_mirror_clicked(self, widget):
+        print("[INFO] : Let's install the ArcoLinux keys and mirrors")
+        fn.install_arcolinux_key_mirror(self)
+
 
 if __name__ == "__main__":
     w = Main()

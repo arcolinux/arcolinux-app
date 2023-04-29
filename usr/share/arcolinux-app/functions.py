@@ -9,7 +9,7 @@ import shutil
 import datetime
 from pathlib import Path
 from distro import id
-from os import getlogin, path, mkdir, rmdir
+from os import getlogin, path, mkdir, rmdir, listdir
 
 DEBUG = False
 
@@ -22,7 +22,23 @@ distr = id()
 sudo_username = getlogin()
 home = "/home/" + str(sudo_username)
 message = "This is the ArcoLinux App"
+arcolinux_mirrorlist = "/etc/pacman.d/arcolinux-mirrorlist"
 
+atestrepo = "[arcolinux_repo_testing]\n\
+SigLevel = Optional TrustedOnly\n\
+Include = /etc/pacman.d/arcolinux-mirrorlist"
+
+arepo = "[arcolinux_repo]\n\
+SigLevel = Optional TrustedOnly\n\
+Include = /etc/pacman.d/arcolinux-mirrorlist"
+
+a3drepo = "[arcolinux_repo_3party]\n\
+SigLevel = Optional TrustedOnly\n\
+Include = /etc/pacman.d/arcolinux-mirrorlist"
+
+axlrepo = "[arcolinux_repo_xlarge]\n\
+SigLevel = Optional TrustedOnly\n\
+Include = /etc/pacman.d/arcolinux-mirrorlist"
 
 # =====================================================
 #              END DECLARATION OF VARIABLES
@@ -139,6 +155,41 @@ def install_package(self, package):
             print("[INFO] : The package " + package + " is now installed")
         except Exception as error:
             print(error)
+
+
+# install ArcoLinux mirrorlist and key package
+def install_arcolinux_key_mirror(self):
+    base_dir = path.dirname(path.realpath(__file__))
+    pathway = base_dir + "/packages/arcolinux-keyring/"
+    file = listdir(pathway)
+
+    try:
+        install = "pacman -U " + pathway + str(file).strip("[]'") + " --noconfirm"
+        print("[INFO] : " + install)
+        subprocess.call(
+            install.split(" "),
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        print("[INFO] : ArcoLinux keyring is now installed")
+    except Exception as error:
+        print(error)
+
+    pathway = base_dir + "/packages/arcolinux-mirrorlist/"
+    file = listdir(pathway)
+    try:
+        install = "pacman -U " + pathway + str(file).strip("[]'") + " --noconfirm"
+        print("[INFO] : " + install)
+        subprocess.call(
+            install.split(" "),
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        print("[INFO] : ArcoLinux mirrorlist is now installed")
+    except Exception as error:
+        print(error)
 
 
 def run_script(self, command):

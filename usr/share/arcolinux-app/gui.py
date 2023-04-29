@@ -14,6 +14,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox4 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
     # ======================================================================
@@ -65,8 +66,20 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox3.pack_start(lbl_arch_server, False, False, 0)
     hbox3.pack_end(self.arch_server, False, False, 0)
 
+    # ======================================================================
+    #                           HBOX 4
+    # ======================================================================
+
+    lbl_arco_key_mirror = Gtk.Label(label="Install ArcoLinux Keys and Mirrorlist: ")
+    self.arco_key_mirror = Gtk.Button(label="Install")
+    self.arco_key_mirror.set_size_request(280, 0)
+    self.arco_key_mirror.connect("clicked", self.on_arco_key_mirror_clicked)
+
+    hbox4.pack_start(lbl_arco_key_mirror, False, False, 0)
+    hbox4.pack_end(self.arco_key_mirror, False, False, 0)
+
     # # ======================================================================
-    # #                            HBOX2
+    # #                            Message
     # # ======================================================================
 
     # lblmessage = Gtk.Label()
@@ -76,7 +89,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     #     '<span foreground="orange" size="xx-large">' + fn.message + "</span>"
     # )  # noqa
 
-    # hbox2.pack_start(lblmessage, True, False, 0)
+    # hbox_Message.pack_start(lblmessage, True, False, 0)
 
     # ======================================================================
     #                       HBOX_BUTTONS
@@ -101,6 +114,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     vbox.pack_start(hbox1, False, False, 0)
     vbox.pack_start(hbox2, False, False, 0)
     vbox.pack_start(hbox3, False, False, 0)
+    vbox.pack_start(hbox4, False, False, 0)
     vbox.pack_end(hbox_buttons, False, False, 7)  # Buttons
 
     scrolledWindow.add(vbox)
