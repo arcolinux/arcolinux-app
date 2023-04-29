@@ -38,6 +38,12 @@ if [ -d /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/work/ ];
 	sudo rm -r /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/work/
 fi
 
+# removing pycache
+if [ -d /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/__pycache__ ]; then
+	sudo rm -r /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/__pycache__
+fi
+
+
 echo "Keyring from ArcoLinux"
 rm /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-keyring/*
 cp /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-keyring*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-keyring
