@@ -38,6 +38,13 @@ if [ -d /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/work/ ];
 	sudo rm -r /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/work/
 fi
 
+echo "Keyring from ArcoLinux"
+cp /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-keyring*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/
+
+echo "Mirror from ArcoLinux"
+cp /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-mirror*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/
+
+
 # Below command will backup everything inside the project folder
 git add --all .
 
