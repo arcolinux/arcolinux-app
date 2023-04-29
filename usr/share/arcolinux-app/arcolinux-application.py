@@ -94,6 +94,22 @@ class Main(Gtk.Window):
         print("[INFO] : Let's install the ArcoLinux keys and mirrors")
         fn.install_arcolinux_key_mirror(self)
 
+        print("[INFO] : Checking whether the repos have been added")
+        if not fn.repo_exist("[arcolinux_repo_testing]"):
+            print("[INFO] : Adding ArcoLinux test repo (not used)")
+            fn.append_repo(self, fn.atestrepo)
+        if not fn.repo_exist("[arcolinux_repo]"):
+            print("[INFO] : Adding ArcoLinux repo")
+            fn.append_repo(self, fn.arepo)
+        if not fn.repo_exist("[arcolinux_repo_3party]"):
+            print("[INFO] : Adding ArcoLinux 3th party repo")
+            fn.append_repo(self, fn.a3prepo)
+        if not fn.repo_exist("[arcolinux_repo_xlarge]"):
+            print("[INFO] : Adding ArcoLinux XL repo")
+            fn.append_repo(self, fn.axlrepo)
+        if fn.repo_exist("[arcolinux_repo]"):
+            print("[INFO] : ArcoLinux repos have been installed")
+
 
 if __name__ == "__main__":
     w = Main()

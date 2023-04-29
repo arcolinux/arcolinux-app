@@ -23,6 +23,7 @@ sudo_username = getlogin()
 home = "/home/" + str(sudo_username)
 message = "This is the ArcoLinux App"
 arcolinux_mirrorlist = "/etc/pacman.d/arcolinux-mirrorlist"
+pacman_conf = "/etc/pacman.conf"
 
 atestrepo = "[arcolinux_repo_testing]\n\
 SigLevel = Optional TrustedOnly\n\
@@ -32,7 +33,7 @@ arepo = "[arcolinux_repo]\n\
 SigLevel = Optional TrustedOnly\n\
 Include = /etc/pacman.d/arcolinux-mirrorlist"
 
-a3drepo = "[arcolinux_repo_3party]\n\
+a3prepo = "[arcolinux_repo_3party]\n\
 SigLevel = Optional TrustedOnly\n\
 Include = /etc/pacman.d/arcolinux-mirrorlist"
 
@@ -267,3 +268,29 @@ def permissions(dst):
 # =====================================================
 #               END GLOBAL FUNCTIONS
 # =====================================================
+
+# =====================================================
+#               START PACMAN.CONF
+# =====================================================
+
+
+def append_repo(self, text):
+    """Append a new repo"""
+    try:
+        with open(pacman_conf, "a", encoding="utf-8") as f:
+            f.write("\n\n")
+            f.write(text)
+    except Exception as error:
+        print(error)
+
+
+def repo_exist(value):
+    """check repo_exists"""
+    with open(pacman_conf, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        f.close()
+
+    for line in lines:
+        if value in line:
+            return True
+    return False
