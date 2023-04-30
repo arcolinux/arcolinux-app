@@ -48,6 +48,87 @@ class Main(Gtk.Window):
         t.daemon = True
         t.start()
 
+    def on_create_arco_clicked(self, widget):
+        # "arcolinuxl",
+        # "arcolinuxd",
+        # "arcolinuxs",
+        # "arcolinuxs-lts",
+        # "arcolinuxs-zen",
+        # "arcolinuxs-xanmod",
+        # "arcolinuxb-awesome",
+
+        choice = self.iso_choices.get_active_text()
+        print("[INFO] : Let's build an ArcoLinux iso : " + choice)
+        # installing archiso if needed
+        package = "archiso"
+        fn.install_package(self, package)
+
+        # making sure we start with a clean slate
+        fn.remove_dir(self, "/root/ArcoLinux-Out")
+        fn.remove_dir(self, "/root/arcolinux-build")
+        fn.remove_dir(self, "/tmp/" + choice)
+
+        # git clone the iso scripts
+        # git clone https://github.com/arcolinux/arcolinuxd-iso
+
+        # core isos
+
+        # B isos
+        if choice == "arcolinuxb-awesome":
+            choice = "arco-awesome"
+            command = (
+                "git clone https://github.com/arcolinuxb/" + choice + "/tmp/" + choice
+            )
+        else:
+            command = (
+                "git clone https://github.com/arcolinux/"
+                + choice
+                + "-iso /tmp/"
+                + choice
+            )
+        fn.run_command(self, command)
+
+        # launch the scripts
+        # /tmp/arcolinuxd/installation-scripts/40-build-the-iso-local-again.sh
+
+        fn.os.chdir("/tmp/" + choice + "/installation-scripts/")
+        command = (
+            "/tmp/" + choice + "/installation-scripts/40-build-the-iso-local-again.sh"
+        )
+
+        try:
+            fn.subprocess.call(
+                "alacritty -e" + command,
+                shell=True,
+                stdout=fn.subprocess.PIPE,
+                stderr=fn.subprocess.STDOUT,
+            )
+        except Exception as error:
+            print(error)
+
+        # move iso from /root/ArcoLinux-Out/ to home directory
+
+        # change the foldername
+        if choice == "arcolinuxl":
+            dir = "ArcoLinux-Out"
+        elif choice == "arcolinuxd":
+            dir = "ArcoLinuxD-Out"
+        else:
+            dir = "ArcoLinuxB-Out"
+        path_dir = "/root/" + dir
+        destination = fn.home + "/" + dir
+
+        fn.shutil.copytree(path_dir, destination, dirs_exist_ok=True)
+
+        # changing permission
+        fn.permissions(destination)
+        print("[INFO] : Check your home directory for the iso")
+
+        # making sure we start with a clean slate
+        # fn.remove_dir(self, "/root/ArcoLinux-Out")
+        # fn.remove_dir(self, "/root/arcolinux-build")
+        # fn.remove_dir(self, "/tmp/" + choice)
+
     def on_create_arch_clicked(self, widget):
         print("[INFO] : Let's build an Arch Linux iso")
         # installing archiso if needed

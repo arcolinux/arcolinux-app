@@ -11,6 +11,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
     hbox_logo = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox0 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
@@ -32,6 +33,33 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox_logo.pack_start(img, True, False, 0)
 
     # ======================================================================
+    #                           HBOX 0
+    # ======================================================================
+
+    lbl_create_arco = Gtk.Label(label="Create your personal ArcoLinux iso: ")
+    self.iso_choices = Gtk.ComboBoxText()
+    options = [
+        "arcolinuxl",
+        "arcolinuxd",
+        "arcolinuxs",
+        "arcolinuxs-lts",
+        "arcolinuxs-zen",
+        "arcolinuxs-xanmod",
+        "arcolinuxb-awesome",
+    ]
+    for option in options:
+        self.iso_choices.append_text(option)
+    self.iso_choices.set_active(0)
+
+    self.create_arco = Gtk.Button(label="Create")
+    self.create_arco.set_size_request(280, 0)
+    self.create_arco.connect("clicked", self.on_create_arco_clicked)
+
+    hbox0.pack_start(lbl_create_arco, False, False, 0)
+    hbox0.pack_start(self.iso_choices, False, False, 0)
+    hbox0.pack_end(self.create_arco, False, False, 0)
+
+    # ======================================================================
     #                           HBOX 1
     # ======================================================================
 
@@ -39,6 +67,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     self.create_arch = Gtk.Button(label="Create")
     self.create_arch.set_size_request(280, 0)
     self.create_arch.connect("clicked", self.on_create_arch_clicked)
+
     hbox1.pack_start(lbl_create_arch, False, False, 0)
     hbox1.pack_end(self.create_arch, False, False, 0)
 
@@ -121,6 +150,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     self.add(scrolledWindow)
 
     vbox.pack_start(hbox_logo, False, False, 20)  # LOGO
+    vbox.pack_start(hbox0, False, False, 0)
     vbox.pack_start(hbox1, False, False, 0)
     vbox.pack_start(hbox2, False, False, 0)
     vbox.pack_start(hbox3, False, False, 0)
