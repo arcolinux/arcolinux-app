@@ -91,24 +91,19 @@ class Main(Gtk.Window):
         fn.run_script(self, command)
 
     def on_arco_key_mirror_clicked(self, widget):
-        print("[INFO] : Let's install the ArcoLinux keys and mirrors")
-        fn.install_arcolinux_key_mirror(self)
-
-        print("[INFO] : Checking whether the repos have been added")
-        if not fn.repo_exist("[arcolinux_repo_testing]"):
-            print("[INFO] : Adding ArcoLinux test repo (not used)")
-            fn.append_repo(self, fn.atestrepo)
-        if not fn.repo_exist("[arcolinux_repo]"):
-            print("[INFO] : Adding ArcoLinux repo")
-            fn.append_repo(self, fn.arepo)
-        if not fn.repo_exist("[arcolinux_repo_3party]"):
-            print("[INFO] : Adding ArcoLinux 3th party repo")
-            fn.append_repo(self, fn.a3prepo)
-        if not fn.repo_exist("[arcolinux_repo_xlarge]"):
-            print("[INFO] : Adding ArcoLinux XL repo")
-            fn.append_repo(self, fn.axlrepo)
-        if fn.repo_exist("[arcolinux_repo]"):
-            print("[INFO] : ArcoLinux repos have been installed")
+        if self.arco_key_mirror._value == 1:
+            print("[INFO] : Let's install the ArcoLinux keys and mirrors")
+            fn.install_arcolinux_key_mirror(self)
+            fn.add_repos()
+            self.arco_key_mirror.set_label("Remove")
+            self.arco_key_mirror._value = 2
+        else:
+            print("[INFO] : Let's remove the ArcoLinux keys and mirrors")
+            fn.remove_arcolinux_key_mirror(self)
+            print("[INFO] : Removing the ArcoLinux repos in /etc/pacman.conf")
+            fn.remove_repos()
+            self.arco_key_mirror.set_label("Install")
+            self.arco_key_mirror._value = 1
 
 
 if __name__ == "__main__":

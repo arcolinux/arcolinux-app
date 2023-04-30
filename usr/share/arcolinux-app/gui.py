@@ -71,7 +71,17 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     # ======================================================================
 
     lbl_arco_key_mirror = Gtk.Label(label="Install ArcoLinux Keys and Mirrorlist: ")
-    self.arco_key_mirror = Gtk.Button(label="Install")
+
+    if not (
+        fn.check_package_installed("arcolinux-keyring")
+        or fn.check_package_installed("arcolinux-mirrorlist-git")
+    ):
+        self.arco_key_mirror = Gtk.Button(label="Install")
+        self.arco_key_mirror._value = 1
+    else:
+        self.arco_key_mirror = Gtk.Button(label="Remove")
+        self.arco_key_mirror._value = 2
+
     self.arco_key_mirror.set_size_request(280, 0)
     self.arco_key_mirror.connect("clicked", self.on_arco_key_mirror_clicked)
 
