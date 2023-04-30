@@ -327,21 +327,40 @@ def append_repo(text):
 
 
 def add_repos():
-    print("[INFO] : Checking whether the repos have been added")
-    if not repo_exist("[arcolinux_repo_testing]"):
-        print("[INFO] : Adding ArcoLinux test repo (not used)")
-        append_repo(atestrepo)
-    if not repo_exist("[arcolinux_repo]"):
-        print("[INFO] : Adding ArcoLinux repo")
-        append_repo(arepo)
-    if not repo_exist("[arcolinux_repo_3party]"):
-        print("[INFO] : Adding ArcoLinux 3th party repo")
-        append_repo(a3prepo)
-    if not repo_exist("[arcolinux_repo_xlarge]"):
-        print("[INFO] : Adding ArcoLinux XL repo")
-        append_repo(axlrepo)
-    if repo_exist("[arcolinux_repo]"):
-        print("[INFO] : ArcoLinux repos have been installed")
+    if distr == "arcolinux":
+        print("[INFO] : Adding ArcoLinux repos on ArcoLinux")
+        try:
+            with open(pacman_conf, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+                f.close()
+        except Exception as error:
+            print(error)
+
+        text = "\n\n" + atestrepo + "\n\n" + arepo + "\n\n" + a3prepo + "\n\n" + axlrepo
+
+        pos = get_position(lines, "#[testing]")
+        lines.insert(pos - 2, text)
+
+        try:
+            with open(pacman_conf, "w", encoding="utf-8") as f:
+                f.writelines(lines)
+        except Exception as error:
+            print(error)
+    else:
+        if not repo_exist("[arcolinux_repo_testing]"):
+            print("[INFO] : Adding ArcoLinux test repo (not used)")
+            append_repo(atestrepo)
+        if not repo_exist("[arcolinux_repo]"):
+            print("[INFO] : Adding ArcoLinux repo")
+            append_repo(arepo)
+        if not repo_exist("[arcolinux_repo_3party]"):
+            print("[INFO] : Adding ArcoLinux 3th party repo")
+            append_repo(a3prepo)
+        if not repo_exist("[arcolinux_repo_xlarge]"):
+            print("[INFO] : Adding ArcoLinux XL repo")
+            append_repo(axlrepo)
+        if repo_exist("[arcolinux_repo]"):
+            print("[INFO] : ArcoLinux repos have been installed")
 
 
 def remove_repos():
