@@ -209,7 +209,7 @@ def install_arcolinux_key_mirror(self):
 # remove ArcoLinux mirrorlist and key package
 def remove_arcolinux_key_mirror(self):
     try:
-        command = "pacman -Rs arcolinux-keyring --noconfirm"
+        command = "pacman -Rdd arcolinux-keyring --noconfirm"
         print("[INFO] : " + command)
         subprocess.call(
             command.split(" "),
@@ -222,7 +222,7 @@ def remove_arcolinux_key_mirror(self):
         print(error)
 
     try:
-        command = "pacman -Rs arcolinux-mirrorlist-git --noconfirm"
+        command = "pacman -Rdd arcolinux-mirrorlist-git --noconfirm"
         print("[INFO] : " + command)
         subprocess.call(
             command.split(" "),
