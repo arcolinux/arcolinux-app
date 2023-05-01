@@ -49,14 +49,6 @@ class Main(Gtk.Window):
         t.start()
 
     def on_create_arco_clicked(self, widget):
-        # "arcolinuxl",
-        # "arcolinuxd",
-        # "arcolinuxs",
-        # "arcolinuxs-lts",
-        # "arcolinuxs-zen",
-        # "arcolinuxs-xanmod",
-        # "arcolinuxb-awesome",
-
         choice = self.iso_choices.get_active_text()
         print("[INFO] : Let's build an ArcoLinux iso : " + choice)
         # installing archiso if needed
@@ -64,33 +56,40 @@ class Main(Gtk.Window):
         fn.install_package(self, package)
 
         # making sure we start with a clean slate
+        print("[INFO] : Let's remove any old previous building folders")
         fn.remove_dir(self, "/root/ArcoLinux-Out")
+        fn.remove_dir(self, "/root/ArcoLinuxB-Out")
+        fn.remove_dir(self, "/root/ArcoLinuxD-Out")
         fn.remove_dir(self, "/root/arcolinux-build")
-        fn.remove_dir(self, "/tmp/" + choice)
+        fn.remove_dir(self, "/root/arcolinuxd-build")
+        fn.remove_dir(self, "/root/arcolinuxb-build")
 
         # git clone the iso scripts
-        # git clone https://github.com/arcolinux/arcolinuxd-iso
 
-        # core isos
+        if "b" in choice:
+            print("[INFO] : Changing the B name")
+            choice = choice.replace("linuxb", "")
+            print("[INFO] : Renaming done to :" + choice)
+            # B isos
 
-        # B isos
-        if choice == "arcolinuxb-awesome":
-            choice = "arco-awesome"
             command = (
-                "git clone https://github.com/arcolinuxb/" + choice + "/tmp/" + choice
+                "git clone https://github.com/arcolinuxb/" + choice + " /tmp/" + choice
             )
         else:
+            # core isos
             command = (
                 "git clone https://github.com/arcolinux/"
                 + choice
                 + "-iso /tmp/"
                 + choice
             )
+        print("[INFO] : git cloning the build folder")
         fn.run_command(self, command)
 
         # launch the scripts
         # /tmp/arcolinuxd/installation-scripts/40-build-the-iso-local-again.sh
 
+        print("[INFO] : Start building the iso in Alacritty")
         fn.os.chdir("/tmp/" + choice + "/installation-scripts/")
         command = (
             "/tmp/" + choice + "/installation-scripts/40-build-the-iso-local-again.sh"
@@ -106,10 +105,20 @@ class Main(Gtk.Window):
         except Exception as error:
             print(error)
 
+        # cleaning up your /tmp folder
+        print("[INFO] : Cleaning up your /tmp folder")
+        fn.remove_dir(self, "/tmp/" + choice)
+
         # move iso from /root/ArcoLinux-Out/ to home directory
 
         # change the foldername
-        if choice == "arcolinuxl":
+        if (
+            choice == "arcolinuxl"
+            or choice == "arcolinuxs"
+            or choice == "arcolinuxs-lts"
+            or choice == "arcolinuxs-zen"
+            or choice == "arcolinuxs-xanmod"
+        ):
             dir = "ArcoLinux-Out"
         elif choice == "arcolinuxd":
             dir = "ArcoLinuxD-Out"
@@ -117,8 +126,11 @@ class Main(Gtk.Window):
             dir = "ArcoLinuxB-Out"
         path_dir = "/root/" + dir
         destination = fn.home + "/" + dir
-
-        fn.shutil.copytree(path_dir, destination, dirs_exist_ok=True)
+        print("[INFO] : Move folder to home directory")
+        try:
+            fn.shutil.copytree(path_dir, destination, dirs_exist_ok=True)
+        except Exception as error:
+            print(error)
 
         # changing permission
         fn.permissions(destination)
@@ -126,8 +138,11 @@ class Main(Gtk.Window):
 
         # making sure we start with a clean slate
         # fn.remove_dir(self, "/root/ArcoLinux-Out")
+        # fn.remove_dir(self, "/root/ArcoLinuxB-Out")
+        # fn.remove_dir(self, "/root/ArcoLinuxD-Out")
         # fn.remove_dir(self, "/root/arcolinux-build")
-        # fn.remove_dir(self, "/tmp/" + choice)
+        # fn.remove_dir(self, "/root/arcolinuxd-build")
+        # fn.remove_dir(self, "/root/arcolinuxb-build")
 
     def on_create_arch_clicked(self, widget):
         print("[INFO] : Let's build an Arch Linux iso")
