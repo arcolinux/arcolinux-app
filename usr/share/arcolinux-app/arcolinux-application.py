@@ -84,13 +84,23 @@ class Main(Gtk.Window):
                 + choice
             )
         print("[INFO] : git cloning the build folder")
-        fn.run_command(self, command)
+        try:
+            fn.run_command(command)
+        except Exception as error:
+            print(error)
 
         # launch the scripts
         # /tmp/arcolinuxd/installation-scripts/40-build-the-iso-local-again.sh
 
         print("[INFO] : Start building the iso in Alacritty")
-        fn.os.chdir("/tmp/" + choice + "/installation-scripts/")
+        print("[INFO] : Sometimes you have to try and build it a second time")
+        print("[INFO] : for it to work because of the special packages from AUR")
+
+        try:
+            fn.os.chdir("/tmp/" + choice + "/installation-scripts/")
+        except Exception as error:
+            print(error)
+
         command = (
             "/tmp/" + choice + "/installation-scripts/40-build-the-iso-local-again.sh"
         )
@@ -104,10 +114,6 @@ class Main(Gtk.Window):
             )
         except Exception as error:
             print(error)
-
-        # cleaning up your /tmp folder
-        print("[INFO] : Cleaning up your /tmp folder")
-        fn.remove_dir(self, "/tmp/" + choice)
 
         # move iso from /root/ArcoLinux-Out/ to home directory
 
@@ -136,14 +142,6 @@ class Main(Gtk.Window):
         fn.permissions(destination)
         print("[INFO] : Check your home directory for the iso")
 
-        # making sure we start with a clean slate
-        # fn.remove_dir(self, "/root/ArcoLinux-Out")
-        # fn.remove_dir(self, "/root/ArcoLinuxB-Out")
-        # fn.remove_dir(self, "/root/ArcoLinuxD-Out")
-        # fn.remove_dir(self, "/root/arcolinux-build")
-        # fn.remove_dir(self, "/root/arcolinuxd-build")
-        # fn.remove_dir(self, "/root/arcolinuxb-build")
-
     def on_create_arch_clicked(self, widget):
         print("[INFO] : Let's build an Arch Linux iso")
         # installing archiso if needed
@@ -156,7 +154,7 @@ class Main(Gtk.Window):
 
         # starting the build script
         command = "mkarchiso -v -o " + fn.home + " /usr/share/archiso/configs/releng/"
-        fn.run_command(self, command)
+        fn.run_command(command)
 
         # changing permission
         x = fn.datetime.datetime.now()

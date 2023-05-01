@@ -260,7 +260,7 @@ def run_script_alacritty(self, command):
         print(error)
 
 
-def run_command(self, command):
+def run_command(command):
     print("[INFO] : Applying this command")
     print("[INFO] : " + command)
     try:

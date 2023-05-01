@@ -45,12 +45,12 @@ fi
 
 
 echo "Keyring from ArcoLinux"
-rm /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-keyring/*
-cp /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-keyring*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-keyring
+rm -v /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-keyring/*
+cp -v /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-keyring*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-keyring
 
 echo "Mirror from ArcoLinux"
-rm /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-mirrorlist/*
-cp /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-mirror*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-mirrorlist
+rm -v /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-mirrorlist/*
+cp -v /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-mirror*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-mirrorlist
 
 
 # Below command will backup everything inside the project folder
