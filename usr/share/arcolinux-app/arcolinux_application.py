@@ -106,7 +106,7 @@ class Main(Gtk.Window):
     def __init__(self):
         super(Main, self).__init__(title="ArcoLinux App")
         self.set_border_width(10)
-        self.set_default_size(750, 400)
+        self.set_default_size(850, 600)
         self.set_icon_from_file(fn.os.path.join(fn.base_dir, "images/arcolinux.png"))
         self.set_position(Gtk.WindowPosition.CENTER)
 
@@ -139,6 +139,21 @@ class Main(Gtk.Window):
         # installing archiso if needed
         package = "archiso"
         fn.install_package(self, package)
+
+        # if arcolinux mirror and key not installed
+        if not fn.check_package_installed(
+            "arcolinux-keyring"
+        ) or not fn.check_package_installed("arcolinux-mirrorlist-git"):
+            print("[INFO] : Installing the ArcoLinux keyring and mirrorlist - ERIK")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Installing the ArcoLinux keyring and mirrorlist" % str(now)
+                + "\n",
+            )
+            fn.install_arcolinux_key_mirror(self)
+            fn.add_repos()
+            self.arco_key_mirror.set_label("Remove")
+            self.arco_key_mirror._value = 2
 
         # making sure we start with a clean slate
         print("[INFO] : Let's remove any old previous building folders")
@@ -203,15 +218,27 @@ class Main(Gtk.Window):
             launchtime,
             "[INFO] %s Launching the building script" % str(now) + "\n",
         )
-        try:
-            fn.subprocess.call(
-                "alacritty -e" + command,
-                shell=True,
-                stdout=fn.subprocess.PIPE,
-                stderr=fn.subprocess.STDOUT,
-            )
-        except Exception as error:
-            print(error)
+
+        if self.enable_hold.get_active():
+            try:
+                fn.subprocess.call(
+                    "alacritty --hold -e" + command,
+                    shell=True,
+                    stdout=fn.subprocess.PIPE,
+                    stderr=fn.subprocess.STDOUT,
+                )
+            except Exception as error:
+                print(error)
+        else:
+            try:
+                fn.subprocess.call(
+                    "alacritty -e" + command,
+                    shell=True,
+                    stdout=fn.subprocess.PIPE,
+                    stderr=fn.subprocess.STDOUT,
+                )
+            except Exception as error:
+                print(error)
 
         # move iso from /root/ArcoLinux-Out/ to home directory
 
@@ -392,6 +419,32 @@ class Main(Gtk.Window):
             fn.remove_repos()
             self.arco_key_mirror.set_label("Install")
             self.arco_key_mirror._value = 1
+
+    def on_pacman_reset_local_clicked(self, widget):
+        if fn.path.isfile(fn.pacman_conf + ".bak"):
+            fn.shutil.copy(fn.pacman_conf + ".bak", fn.pacman_conf)
+            print(
+                "[INFO] : We have used /etc/pacman.conf.bak to reset /etc/pacman.conf"
+            )
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Let's install the ArcoLinux keys and mirrors" % str(now)
+                + "\n",
+            )
+
+    def on_pacman_reset_cached_clicked(self, widget):
+        fn.shutil.copy(fn.pacman_arco, fn.pacman_conf)
+        if fn.distr == "arch":
+            fn.shutil.copy(fn.pacman_arch, fn.pacman_conf)
+        if fn.distr == "endeavouros":
+            fn.shutil.copy(fn.pacman_eos, fn.pacman_conf)
+        if fn.distr == "garuda":
+            fn.shutil.copy(fn.pacman_garuda, fn.pacman_conf)
+        print("[INFO] : We have used the cached pacman.conf")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s We have used the cached pacman.conf" % str(now) + "\n",
+        )
 
 
 if __name__ == "__main__":

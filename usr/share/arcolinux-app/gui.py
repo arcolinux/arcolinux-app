@@ -18,6 +18,8 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox4 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox5 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox_message = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
     # ======================================================================
@@ -84,6 +86,9 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     for option in options:
         self.iso_choices.append_text(option)
     self.iso_choices.set_active(0)
+    self.iso_choices.set_wrap_width(1)
+
+    self.enable_hold = Gtk.CheckButton(label="hold")
 
     self.create_arco = Gtk.Button(label="Create")
     self.create_arco.set_size_request(280, 0)
@@ -92,6 +97,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox0.pack_start(lbl_create_arco, False, False, 0)
     hbox0.pack_start(self.iso_choices, False, False, 0)
     hbox0.pack_end(self.create_arco, False, False, 0)
+    hbox0.pack_end(self.enable_hold, False, False, 0)
 
     # ======================================================================
     #                           HBOX 1
@@ -175,19 +181,35 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox4.pack_start(lbl_arco_key_mirror, False, False, 0)
     hbox4.pack_end(self.arco_key_mirror, False, False, 0)
 
+    # ======================================================================
+    #                           HBOX 7
+    # ======================================================================
+
+    lbl_pacman_reset = Gtk.Label(label="Reset your /etc/pacman.conf: ")
+    self.pacman_reset_local = Gtk.Button(label="From local file")
+    self.pacman_reset_local.set_size_request(280, 0)
+    self.pacman_reset_local.connect("clicked", self.on_pacman_reset_local_clicked)
+    self.pacman_reset_cached = Gtk.Button(label="Cached")
+    self.pacman_reset_cached.set_size_request(280, 0)
+    self.pacman_reset_cached.connect("clicked", self.on_pacman_reset_cached_clicked)
+
+    hbox7.pack_start(lbl_pacman_reset, False, False, 0)
+    hbox7.pack_end(self.pacman_reset_local, False, False, 0)
+    hbox7.pack_end(self.pacman_reset_cached, False, False, 0)
+
     # # ======================================================================
     # #                            Message
     # # ======================================================================
 
-    # lblmessage = Gtk.Label()
-    # lblmessage.set_justify(Gtk.Justification.CENTER)
-    # lblmessage.set_line_wrap(True)
-    # lblmessage.set_markup(
-    #     '<span foreground="orange" size="xx-large">' + fn.message + "</span>"
-    # )  # noqa
-
-    # hbox_Message.pack_start(lblmessage, True, False, 0)
-
+    lblmessage = Gtk.Label()
+    lblmessage.set_justify(Gtk.Justification.CENTER)
+    lblmessage.set_line_wrap(True)
+    lblmessage.set_markup(
+        '<span foreground="white" size="x-large">Use the hold option to keep Alacritty open and analyze. \n \
+Do not use it to build an ISO!</span>'
+    )
+    # if self.enable_hold.get_active():
+    hbox_message.pack_start(lblmessage, True, False, 0)
     # ======================================================================
     #                       HBOX_BUTTONS
     # ======================================================================
@@ -215,6 +237,8 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     vbox.pack_start(hbox2, False, False, 0)
     vbox.pack_start(hbox3, False, False, 0)
     vbox.pack_start(hbox4, False, False, 0)
+    vbox.pack_start(hbox7, False, False, 0)
     vbox.pack_end(hbox_buttons, False, False, 7)  # Buttons
+    vbox.pack_end(hbox_message, False, False, 7)  # Message
 
     scrolledWindow.add(vbox)
