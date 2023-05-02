@@ -3,15 +3,26 @@
 # =                  Author: Erik Dubois                          =
 # =================================================================
 
+from datetime import datetime
+from time import sleep
+
+import functions as fn
 import gi
 import gui
 import splash
-import functions as fn
-from time import sleep
 
 gi.require_version("Gtk", "3.0")
 
-from gi.repository import Gtk, GdkPixbuf  # noqa
+from gi.repository import GdkPixbuf, Gtk  # noqa
+
+now = datetime.now()
+global launchtime
+launchtime = now.strftime("%Y-%m-%d-%H-%M-%S")
+
+fn.create_actions_log(
+    launchtime,
+    "[INFO] %s App Started" % str(now) + "\n",
+)
 
 print("---------------------------------------------------------------------------")
 print("[INFO] : pkgver = pkgversion")
@@ -20,10 +31,16 @@ print("-------------------------------------------------------------------------
 print("[INFO] : Distro = " + fn.distr)
 print("---------------------------------------------------------------------------")
 
-# =====================================================
-#     ATT THEME DARK OR LIGHT - FOLLOW USER SELECTION
-# ====================================================
+fn.create_actions_log(
+    launchtime,
+    "[INFO] %s [INFO] : pkgver = pkgversion" % str(now) + "\n",
+)
+fn.create_actions_log(
+    launchtime,
+    "[INFO] %s [INFO] : pkgver = pkgrelease" % str(now) + "\n",
+)
 
+# making sure the tool follows a dark or light theme
 if not fn.path.isdir("/root/.config/"):
     try:
         fn.makedirs("/root/.config", 0o766)
@@ -54,6 +71,10 @@ if fn.path.isfile(fn.pacman_conf):
         try:
             fn.shutil.copy(fn.pacman_conf, fn.pacman_conf + ".bak")
             print("[INFO] : Making a backup of /etc/pacman.conf")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Making a backup of /etc/pacman.conf" % str(now) + "\n",
+            )
         except Exception as error:
             print(error)
 
@@ -63,8 +84,22 @@ if fn.path.isfile(fn.mirrorlist):
         try:
             fn.shutil.copy(fn.mirrorlist, fn.mirrorlist + ".bak")
             print("[INFO] : Making a backup of /etc/pacman.d/mirrorlist")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Making a backup of /etc/pacman.d/mirrorlist" % str(now)
+                + "\n",
+            )
         except Exception as error:
             print(error)
+
+
+# make directory if it doesn't exist
+if not fn.path.isdir(fn.log_dir):
+    try:
+        fn.mkdir(fn.log_dir)
+    except Exception as error:
+        print(error)
+now = datetime.now().strftime("%H:%M:%S")
 
 
 class Main(Gtk.Window):
@@ -97,6 +132,10 @@ class Main(Gtk.Window):
     def on_create_arco_clicked(self, widget):
         choice = self.iso_choices.get_active_text()
         print("[INFO] : Let's build an ArcoLinux iso : " + choice)
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Let's build an ArcoLinux iso" % str(now) + "\n",
+        )
         # installing archiso if needed
         package = "archiso"
         fn.install_package(self, package)
@@ -160,6 +199,10 @@ class Main(Gtk.Window):
         )
 
         print("[INFO] : Launching the building script")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Launching the building script" % str(now) + "\n",
+        )
         try:
             fn.subprocess.call(
                 "alacritty -e" + command,
@@ -199,6 +242,10 @@ class Main(Gtk.Window):
 
     def on_create_arch_clicked(self, widget):
         print("[INFO] : Let's build an Arch Linux iso")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Let's build an Arch Linux iso" % str(now) + "\n",
+        )
         # installing archiso if needed
         package = "archiso"
         fn.install_package(self, package)
@@ -227,6 +274,10 @@ class Main(Gtk.Window):
 
     def on_clean_pacman_cache_clicked(self, widget):
         print("[INFO] : Let's clean the pacman cache")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Let's clean the pacman cache" % str(now) + "\n",
+        )
         command = "yes | pacman -Scc"
         package = "alacritty"
         fn.install_package(self, package)
@@ -238,20 +289,32 @@ class Main(Gtk.Window):
                 stderr=fn.subprocess.STDOUT,
             )
             print("[INFO] : Pacman cache cleaned")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Pacman cache cleaned" % str(now) + "\n",
+            )
         except Exception as error:
             print(error)
 
     def on_fix_arch_clicked(self, widget):
         print("[INFO] : Let's fix the keys of Arch Linux")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Let's fix the keys of Arch Linux" % str(now) + "\n",
+        )
         command = fn.base_dir + "/scripts/fixkey"
         package = "alacritty"
         fn.install_package(self, package)
-        fn.run_script_alacritty(self, command)
+        fn.run_script_alacritty_hold(self, command)
 
     def on_get_nemesis_clicked(self, widget):
-        print("[INFO] : Get the ArcoLinux nemesis scipts")
+        print("[INFO] : Get the ArcoLinux nemesis scripts")
         print("[INFO] : We create a DATA folder in your home dir")
         print("[INFO] : We git clone the scripts in there")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Get the ArcoLinux nemesis scripts" % str(now) + "\n",
+        )
         command = fn.base_dir + "/scripts/get-nemesis-on-arcolinux-app"
         package = "alacritty"
         fn.install_package(self, package)
@@ -264,10 +327,19 @@ class Main(Gtk.Window):
         except Exception as error:
             print(error)
         print("[INFO] : We saved the scripts to ~/DATA/arcolinux-nemesis")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s We saved the scripts to ~/DATA/arcolinux-nemesis" % str(now)
+            + "\n",
+        )
         fn.permissions(destination)
 
     def on_arch_server_clicked(self, widget):
         print("[INFO] : Let's change the Arch Linux mirrors")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Let's change the Arch Linux mirrors" % str(now) + "\n",
+        )
         command = fn.base_dir + "/scripts/best-arch-servers"
         package = "alacritty"
         fn.install_package(self, package)
@@ -284,18 +356,39 @@ class Main(Gtk.Window):
         print("[INFO] : Server = http://mirror.osbeck.com/archlinux/\$repo/os/\$arch")
         print("[INFO] : Server = https://geo.mirror.pkgbuild.com/\$repo/os/\$arch")
         print("[INFO] : Done")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s We changed the content of your /etc/pacman.d/mirrorlist"
+            % str(now)
+            + "\n",
+        )
 
     def on_arco_key_mirror_clicked(self, widget):
         if self.arco_key_mirror._value == 1:
             print("[INFO] : Let's install the ArcoLinux keys and mirrors")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Let's install the ArcoLinux keys and mirrors" % str(now)
+                + "\n",
+            )
             fn.install_arcolinux_key_mirror(self)
             fn.add_repos()
             self.arco_key_mirror.set_label("Remove")
             self.arco_key_mirror._value = 2
         else:
             print("[INFO] : Let's remove the ArcoLinux keys and mirrors")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Let's remove the ArcoLinux keys and mirrors" % str(now)
+                + "\n",
+            )
             fn.remove_arcolinux_key_mirror(self)
             print("[INFO] : Removing the ArcoLinux repos in /etc/pacman.conf")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s  Removing the ArcoLinux repos in /etc/pacman.conf" % str(now)
+                + "\n",
+            )
             fn.remove_repos()
             self.arco_key_mirror.set_label("Install")
             self.arco_key_mirror._value = 1

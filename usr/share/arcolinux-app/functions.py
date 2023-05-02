@@ -2,14 +2,15 @@
 # =                  Author: Erik Dubois                          =
 # =================================================================
 
-import os
-import subprocess
-import psutil
-import shutil
 import datetime
+import os
+import shutil
+import subprocess
+from os import getlogin, listdir, mkdir, path, rmdir
 from pathlib import Path
+
+import psutil
 from distro import id
-from os import getlogin, path, mkdir, rmdir, listdir
 
 DEBUG = False
 
@@ -25,6 +26,7 @@ message = "This is the ArcoLinux App"
 arcolinux_mirrorlist = "/etc/pacman.d/arcolinux-mirrorlist"
 pacman_conf = "/etc/pacman.conf"
 mirrorlist = "/etc/pacman.d/mirrorlist"
+log_dir = "/var/log/arcolinux-app/"
 
 atestrepo = "#[arcolinux_repo_testing]\n\
 #SigLevel = Optional TrustedOnly\n\
@@ -247,12 +249,26 @@ def run_script(self, command):
         print(error)
 
 
-def run_script_alacritty(self, command):
+def run_script_alacritty_hold(self, command):
     print("[INFO] : Applying this command")
     print("[INFO] : " + command)
     try:
         subprocess.call(
             "alacritty --hold -e" + command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+    except Exception as error:
+        print(error)
+
+
+def run_script_alacritty(self, command):
+    print("[INFO] : Applying this command")
+    print("[INFO] : " + command)
+    try:
+        subprocess.call(
+            "alacritty -e" + command,
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -404,3 +420,42 @@ def remove_repos():
 
     except Exception as error:
         print(error)
+
+
+# =====================================================
+#                     LOGGING
+# =====================================================
+
+
+def create_packages_log():
+    now = datetime.now().strftime("%H:%M:%S")
+    print("[INFO] " + now + " Creating a log file in /var/log/sofirem/software")
+    destination = log_dir + "arcolinux-app-log-" + launchtime
+    command = "sudo pacman -Q > " + destination
+    subprocess.call(
+        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
+    create_actions_log(
+        launchtime,
+        "[INFO] %s Creating a log file in /var/log/sofirem/software " % now + "\n",
+    )
+    # GLib.idle_add(
+    #     show_in_app_notification, "is already installed - nothing to do", "test"
+    # )
+
+
+def create_actions_log(launchtime, message):
+    if not os.path.exists(log_dir + launchtime):
+        try:
+            with open(log_dir + launchtime, "x", encoding="utf8") as f:
+                f.close
+        except Exception as error:
+            print(error)
+
+    if os.path.exists(log_dir + launchtime):
+        try:
+            with open(log_dir + launchtime, "a", encoding="utf-8") as f:
+                f.write(message)
+                f.close()
+        except Exception as error:
+            print(error)

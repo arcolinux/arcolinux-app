@@ -48,4 +48,4 @@ esac
 echo "---------------------------------------------------------------------------"
 
 echo "[INFO] Starting ArcoLinux-App"
-pkexec '/usr/share/arcolinux-app/arcolinux-application.py'
+pkexec '/usr/share/arcolinux-app/arcolinux_application.py'
