@@ -20,6 +20,52 @@ print("-------------------------------------------------------------------------
 print("[INFO] : Distro = " + fn.distr)
 print("---------------------------------------------------------------------------")
 
+# =====================================================
+#     ATT THEME DARK OR LIGHT - FOLLOW USER SELECTION
+# ====================================================
+
+if not fn.path.isdir("/root/.config/"):
+    try:
+        fn.makedirs("/root/.config", 0o766)
+    except Exception as error:
+        print(error)
+
+if not fn.path.isdir("/root/.config/gtk-3.0"):
+    try:
+        fn.makedirs("/root/.config/gtk-3.0", 0o766)
+    except Exception as error:
+        print(error)
+
+if not fn.path.isdir("/root/.config/gtk-4.0"):
+    try:
+        fn.makedirs("/root/.config/gtk-4.0", 0o766)
+    except Exception as error:
+        print(error)
+
+if not fn.path.isdir("/root/.config/xsettingsd"):
+    try:
+        fn.makedirs("/root/.config/xsettingsd", 0o766)
+    except Exception as error:
+        print(error)
+
+# make backup of /etc/pacman.conf
+if fn.path.isfile(fn.pacman_conf):
+    if not fn.path.isfile(fn.pacman_conf + ".bak"):
+        try:
+            fn.shutil.copy(fn.pacman_conf, fn.pacman_conf + ".bak")
+            print("[INFO] : Making a backup of /etc/pacman.conf")
+        except Exception as error:
+            print(error)
+
+# ensuring we have a backup or the arcolinux mirrorlist
+if fn.path.isfile(fn.mirrorlist):
+    if not fn.path.isfile(fn.mirrorlist + ".bak"):
+        try:
+            fn.shutil.copy(fn.mirrorlist, fn.mirrorlist + ".bak")
+            print("[INFO] : Making a backup of /etc/pacman.d/mirrorlist")
+        except Exception as error:
+            print(error)
+
 
 class Main(Gtk.Window):
     def __init__(self):
@@ -179,12 +225,46 @@ class Main(Gtk.Window):
         fn.remove_dir(self, fn.base_dir + "/work")
         fn.remove_dir(self, "/root/work")
 
+    def on_clean_pacman_cache_clicked(self, widget):
+        print("[INFO] : Let's clean the pacman cache")
+        command = "yes | pacman -Scc"
+        package = "alacritty"
+        fn.install_package(self, package)
+        try:
+            fn.subprocess.call(
+                command,
+                shell=True,
+                stdout=fn.subprocess.PIPE,
+                stderr=fn.subprocess.STDOUT,
+            )
+            print("[INFO] : Pacman cache cleaned")
+        except Exception as error:
+            print(error)
+
     def on_fix_arch_clicked(self, widget):
         print("[INFO] : Let's fix the keys of Arch Linux")
         command = fn.base_dir + "/scripts/fixkey"
         package = "alacritty"
         fn.install_package(self, package)
         fn.run_script_alacritty(self, command)
+
+    def on_get_nemesis_clicked(self, widget):
+        print("[INFO] : Get the ArcoLinux nemesis scipts")
+        print("[INFO] : We create a DATA folder in your home dir")
+        print("[INFO] : We git clone the scripts in there")
+        command = fn.base_dir + "/scripts/get-nemesis-on-arcolinux-app"
+        package = "alacritty"
+        fn.install_package(self, package)
+        fn.run_script(self, command)
+        path_dir = "/root/DATA"
+        destination = fn.home + "/DATA"
+        # Move folder to home directory
+        try:
+            fn.shutil.copytree(path_dir, destination, dirs_exist_ok=True)
+        except Exception as error:
+            print(error)
+        print("[INFO] : We saved the scripts to ~/DATA/arcolinux-nemesis")
+        fn.permissions(destination)
 
     def on_arch_server_clicked(self, widget):
         print("[INFO] : Let's change the Arch Linux mirrors")

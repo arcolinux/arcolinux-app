@@ -16,6 +16,8 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox4 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox5 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
     # ======================================================================
@@ -104,6 +106,30 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox1.pack_end(self.create_arch, False, False, 0)
 
     # ======================================================================
+    #                           HBOX 5
+    # ======================================================================
+
+    lbl_clean_pacman_cache = Gtk.Label(label="Clean the pacman cache: ")
+    self.clean_pacman_cache = Gtk.Button(label="Clean")
+    self.clean_pacman_cache.set_size_request(280, 0)
+    self.clean_pacman_cache.connect("clicked", self.on_clean_pacman_cache_clicked)
+
+    hbox5.pack_start(lbl_clean_pacman_cache, False, False, 0)
+    hbox5.pack_end(self.clean_pacman_cache, False, False, 0)
+
+    # ======================================================================
+    #                           HBOX 6
+    # ======================================================================
+
+    lbl_get_nemesis = Gtk.Label(label="Get the ArcoLinux nemesis scripts: ")
+    self.get_nemesis = Gtk.Button(label="Install them")
+    self.get_nemesis.set_size_request(280, 0)
+    self.get_nemesis.connect("clicked", self.on_get_nemesis_clicked)
+
+    hbox6.pack_start(lbl_get_nemesis, False, False, 0)
+    hbox6.pack_end(self.get_nemesis, False, False, 0)
+
+    # ======================================================================
     #                           HBOX 2
     # ======================================================================
 
@@ -184,6 +210,8 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     vbox.pack_start(hbox_logo, False, False, 20)  # LOGO
     vbox.pack_start(hbox0, False, False, 0)
     vbox.pack_start(hbox1, False, False, 0)
+    vbox.pack_start(hbox5, False, False, 0)
+    vbox.pack_start(hbox6, False, False, 0)
     vbox.pack_start(hbox2, False, False, 0)
     vbox.pack_start(hbox3, False, False, 0)
     vbox.pack_start(hbox4, False, False, 0)

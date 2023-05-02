@@ -24,6 +24,7 @@ home = "/home/" + str(sudo_username)
 message = "This is the ArcoLinux App"
 arcolinux_mirrorlist = "/etc/pacman.d/arcolinux-mirrorlist"
 pacman_conf = "/etc/pacman.conf"
+mirrorlist = "/etc/pacman.d/mirrorlist"
 
 atestrepo = "#[arcolinux_repo_testing]\n\
 #SigLevel = Optional TrustedOnly\n\
