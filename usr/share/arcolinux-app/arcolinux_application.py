@@ -144,7 +144,7 @@ class Main(Gtk.Window):
         if not fn.check_package_installed(
             "arcolinux-keyring"
         ) or not fn.check_package_installed("arcolinux-mirrorlist-git"):
-            print("[INFO] : Installing the ArcoLinux keyring and mirrorlist - ERIK")
+            print("[INFO] : Installing the ArcoLinux keyring and mirrorlist")
             fn.create_actions_log(
                 launchtime,
                 "[INFO] %s Installing the ArcoLinux keyring and mirrorlist" % str(now)
