@@ -446,6 +446,56 @@ class Main(Gtk.Window):
             "[INFO] %s We have used the cached pacman.conf" % str(now) + "\n",
         )
 
+    def on_find_path(self, widget):
+        print("path")
+        dialog = Gtk.FileChooserDialog(
+            title="Please choose a file",
+            action=Gtk.FileChooserAction.OPEN,
+        )
+        filter = Gtk.FileFilter()
+        filter.set_name("Text files")
+        # filter.add_mime_type("image/png")
+        # filter.add_mime_type("image/jpg")
+        # filter.add_mime_type("image/jpeg")
+        # dialog.set_filter(filter)
+        dialog.set_current_folder(fn.home)
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.OK
+        )
+        dialog.connect("response", self.open_response_cb)
+
+        dialog.show()
+
+    def open_response_cb(self, dialog, response):
+        if response == Gtk.ResponseType.OK:
+            self.packages_path.set_text(dialog.get_filename())
+            dialog.destroy()
+        elif response == Gtk.ResponseType.CANCEL:
+            dialog.destroy()
+
+    def on_pacman_install_packages(self, widget):
+        path = self.packages_path.get_text()
+        if len(path) > 1 and not path == "Choose a file first":
+            print("[INFO] : Installing packages from selected file")
+            print("[INFO] : You selected this file")
+            print("[INFO] : File: " + path)
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Installing packages from selected file" % str(now) + "\n",
+            )
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s You selected this file" % str(now) + "\n",
+            )
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s File: " % str(now) + path + "\n",
+            )
+            fn.install_packages_path(self, self.packages_path.get_text())
+        else:
+            print("[INFO] : First select a file")
+            self.packages_path.set_text("Choose a file first")
+
 
 if __name__ == "__main__":
     w = Main()

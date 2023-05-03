@@ -474,3 +474,17 @@ def create_actions_log(launchtime, message):
                 f.close()
         except Exception as error:
             print(error)
+
+
+def install_packages_path(self, path):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            f.close()
+    except Exception as error:
+        print(error)
+
+    for line in lines:
+        line = line.strip("\n")
+        if not line.find("#") != -1:
+            install_package(self, line)

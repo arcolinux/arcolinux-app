@@ -19,6 +19,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox5 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox8 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_message = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
@@ -197,6 +198,21 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox7.pack_end(self.pacman_reset_local, False, False, 0)
     hbox7.pack_end(self.pacman_reset_cached, False, False, 0)
 
+    # ======================================================================
+    #                           HBOX 8
+    # ======================================================================
+
+    lbl_packages_installer = Gtk.Label(label="Install packages from file: ")
+    self.packages_path = Gtk.Entry()
+    btnsearch = Gtk.Button(label=". . .")
+    btnsearch.connect("clicked", self.on_find_path)
+    btninstall = Gtk.Button(label="Install")
+    btninstall.connect("clicked", self.on_pacman_install_packages)
+    hbox8.pack_start(lbl_packages_installer, False, False, 0)
+    hbox8.pack_start(self.packages_path, True, True, 0)
+    hbox8.pack_end(btninstall, False, False, 0)
+    hbox8.pack_end(btnsearch, False, False, 0)
+
     # # ======================================================================
     # #                            Message
     # # ======================================================================
@@ -238,6 +254,7 @@ Do not use it to build an ISO!</span>'
     vbox.pack_start(hbox3, False, False, 0)
     vbox.pack_start(hbox4, False, False, 0)
     vbox.pack_start(hbox7, False, False, 0)
+    vbox.pack_start(hbox8, False, False, 0)
     vbox.pack_end(hbox_buttons, False, False, 7)  # Buttons
     vbox.pack_end(hbox_message, False, False, 7)  # Message
 
