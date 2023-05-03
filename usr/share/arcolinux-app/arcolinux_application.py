@@ -17,6 +17,7 @@ from gi.repository import GdkPixbuf, Gtk  # noqa
 
 now = datetime.now()
 global launchtime
+# launchtime = file in /var/log
 launchtime = now.strftime("%Y-%m-%d-%H-%M-%S")
 
 fn.create_actions_log(
@@ -130,11 +131,12 @@ class Main(Gtk.Window):
         t.start()
 
     def on_create_arco_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         choice = self.iso_choices.get_active_text()
         print("[INFO] : Let's build an ArcoLinux iso : " + choice)
         fn.create_actions_log(
             launchtime,
-            "[INFO] %s Let's build an ArcoLinux iso" % str(now) + "\n",
+            "[INFO] %s Let's build an ArcoLinux iso" % now + "\n",
         )
         # installing archiso if needed
         package = "archiso"
@@ -220,25 +222,50 @@ class Main(Gtk.Window):
         )
 
         if self.enable_hold.get_active():
-            try:
-                fn.subprocess.call(
-                    "alacritty --hold -e" + command,
-                    shell=True,
-                    stdout=fn.subprocess.PIPE,
-                    stderr=fn.subprocess.STDOUT,
-                )
-            except Exception as error:
-                print(error)
+            critty = "alacritty --hold -e"
+            print("[INFO] : Using the hold option")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Using the hold option" % str(now) + "\n",
+            )
         else:
-            try:
-                fn.subprocess.call(
-                    "alacritty -e" + command,
-                    shell=True,
-                    stdout=fn.subprocess.PIPE,
-                    stderr=fn.subprocess.STDOUT,
-                )
-            except Exception as error:
-                print(error)
+            print("[INFO] : Not using the hold option")
+            fn.create_actions_log(
+                launchtime,
+                "[INFO] %s Not using the hold option" % str(now) + "\n",
+            )
+            critty = "alacritty -e"
+
+        try:
+            fn.subprocess.call(
+                critty + command,
+                shell=True,
+                stdout=fn.subprocess.PIPE,
+                stderr=fn.subprocess.STDOUT,
+            )
+        except Exception as error:
+            print(error)
+
+        # if self.enable_hold.get_active():
+        #     try:
+        #         fn.subprocess.call(
+        #             "alacritty --hold -e" + command,
+        #             shell=True,
+        #             stdout=fn.subprocess.PIPE,
+        #             stderr=fn.subprocess.STDOUT,
+        #         )
+        #     except Exception as error:
+        #         print(error)
+        # else:
+        #     try:
+        #         fn.subprocess.call(
+        #             "alacritty -e" + command,
+        #             shell=True,
+        #             stdout=fn.subprocess.PIPE,
+        #             stderr=fn.subprocess.STDOUT,
+        #         )
+        #     except Exception as error:
+        #         print(error)
 
         # move iso from /root/ArcoLinux-Out/ to home directory
 
@@ -268,6 +295,7 @@ class Main(Gtk.Window):
         print("[INFO] : Check your home directory for the iso")
 
     def on_create_arch_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Let's build an Arch Linux iso")
         fn.create_actions_log(
             launchtime,
@@ -300,6 +328,7 @@ class Main(Gtk.Window):
         fn.remove_dir(self, "/root/work")
 
     def on_clean_pacman_cache_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Let's clean the pacman cache")
         fn.create_actions_log(
             launchtime,
@@ -324,6 +353,7 @@ class Main(Gtk.Window):
             print(error)
 
     def on_fix_arch_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Let's fix the keys of Arch Linux")
         fn.create_actions_log(
             launchtime,
@@ -335,6 +365,7 @@ class Main(Gtk.Window):
         fn.run_script_alacritty_hold(self, command)
 
     def on_get_nemesis_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Get the ArcoLinux nemesis scripts")
         print("[INFO] : We create a DATA folder in your home dir")
         print("[INFO] : We git clone the scripts in there")
@@ -362,6 +393,7 @@ class Main(Gtk.Window):
         fn.permissions(destination)
 
     def on_arch_server_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Let's change the Arch Linux mirrors")
         fn.create_actions_log(
             launchtime,
@@ -391,6 +423,7 @@ class Main(Gtk.Window):
         )
 
     def on_arco_key_mirror_clicked_install(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Let's install the ArcoLinux keys and mirrors")
         fn.create_actions_log(
             launchtime,
@@ -406,6 +439,7 @@ class Main(Gtk.Window):
         fn.add_repos()
 
     def on_arco_key_mirror_clicked_remove(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Let's remove the ArcoLinux keys and mirrors")
         fn.create_actions_log(
             launchtime,
@@ -421,6 +455,7 @@ class Main(Gtk.Window):
         fn.remove_repos()
 
     def on_pacman_reset_local_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         if fn.path.isfile(fn.pacman_conf + ".bak"):
             fn.shutil.copy(fn.pacman_conf + ".bak", fn.pacman_conf)
             print(
@@ -435,6 +470,7 @@ class Main(Gtk.Window):
             fn.pacman_safeguard()
 
     def on_pacman_reset_cached_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         fn.shutil.copy(fn.pacman_arco, fn.pacman_conf)
         if fn.distr == "arch":
             fn.shutil.copy(fn.pacman_arch, fn.pacman_conf)
@@ -477,6 +513,7 @@ class Main(Gtk.Window):
             dialog.destroy()
 
     def on_pacman_install_packages(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
         path = self.packages_path.get_text()
         if len(path) > 1 and not path == "Choose a file first":
             print("[INFO] : Installing packages from selected file")
