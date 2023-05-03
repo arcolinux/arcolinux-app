@@ -432,6 +432,7 @@ class Main(Gtk.Window):
                 % str(now)
                 + "\n",
             )
+            fn.pacman_safeguard()
 
     def on_pacman_reset_cached_clicked(self, widget):
         fn.shutil.copy(fn.pacman_arco, fn.pacman_conf)
@@ -446,6 +447,7 @@ class Main(Gtk.Window):
             launchtime,
             "[INFO] %s We have used the cached pacman.conf" % str(now) + "\n",
         )
+        fn.pacman_safeguard()
 
     def on_find_path(self, widget):
         print("path")

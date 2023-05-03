@@ -24,9 +24,9 @@ sudo_username = getlogin()
 home = "/home/" + str(sudo_username)
 message = "This is the ArcoLinux App"
 arcolinux_mirrorlist = "/etc/pacman.d/arcolinux-mirrorlist"
-pacman_conf = "/etc/pacman.conf"
 mirrorlist = "/etc/pacman.d/mirrorlist"
 log_dir = "/var/log/arcolinux-app/"
+pacman_conf = "/etc/pacman.conf"
 pacman_arch = "/usr/share/arcolinux-app/data/arch/pacman.conf"
 pacman_arco = "/usr/share/arcolinux-app/data/arco/pacman.conf"
 pacman_eos = "/usr/share/arcolinux-app/data/eos/pacman.conf"
@@ -216,10 +216,10 @@ def install_arcolinux_key_mirror(self):
 # remove ArcoLinux mirrorlist and key package
 def remove_arcolinux_key_mirror(self):
     try:
-        command = "pacman -Rdd arcolinux-keyring --noconfirm"
-        print("[INFO] : " + command)
+        command1 = "pacman -Rdd arcolinux-keyring --noconfirm"
+        print("[INFO] : " + command1)
         subprocess.call(
-            command.split(" "),
+            command1.split(" "),
             shell=False,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -229,10 +229,10 @@ def remove_arcolinux_key_mirror(self):
         print(error)
 
     try:
-        command = "pacman -Rdd arcolinux-mirrorlist-git --noconfirm"
-        print("[INFO] : " + command)
+        command2 = "pacman -Rdd arcolinux-mirrorlist-git --noconfirm"
+        print("[INFO] : " + command2)
         subprocess.call(
-            command.split(" "),
+            command2.split(" "),
             shell=False,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -240,6 +240,13 @@ def remove_arcolinux_key_mirror(self):
         print("[INFO] : ArcoLinux mirrorlist is now removed")
     except Exception as error:
         print(error)
+
+
+def pacman_safeguard():
+    package = "arcolinux-mirrorlist-git"
+    if not check_package_installed(package):
+        print("[INFO] : Removing the lines referring to the ArcoLinux repos")
+        remove_repos()
 
 
 def run_script(self, command):
