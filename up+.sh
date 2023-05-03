@@ -30,27 +30,43 @@
 # reset - commit your changes or stash them before you merge
 # git reset --hard - personal alias - grh
 
+workdir=$(pwd)
+
 # checking if I have the latest files from github
 echo "Checking for newer files online first"
 git pull
 
-if [ -d /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/work/ ]; then
-	sudo rm -r /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/work/
-fi
+# if [ -d /home/erik/ARCO/ARCOLINUX/arcolinux-app-dev/usr/share/arcolinux-app/work/ ]; then
+# 	sudo rm -r /home/erik/ARCO/ARCOLINUX/arcolinux-app-dev/usr/share/arcolinux-app/work/
+# fi
 
 # removing pycache
-if [ -d /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/__pycache__ ]; then
-	sudo rm -r /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/__pycache__
-fi
+# if [ -d /home/erik/ARCO/ARCOLINUX/arcolinux-app-dev/usr/share/arcolinux-app/__pycache__ ]; then
+# 	sudo rm -r /home/erik/ARCO/ARCOLINUX/arcolinux-app-dev/usr/share/arcolinux-app/__pycache__
+# fi
 
 
 echo "Keyring from ArcoLinux"
-rm -v /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-keyring/*
-cp -v /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-keyring*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-keyring
+rm -v $workdir/usr/share/arcolinux-app/packages/arcolinux-keyring/*
+cp -v /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-keyring*pkg.tar.zst $workdir/usr/share/arcolinux-app/packages/arcolinux-keyring
 
 echo "Mirror from ArcoLinux"
-rm -v /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-mirrorlist/*
-cp -v /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-mirror*pkg.tar.zst /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-mirrorlist
+rm -v /home/erik/ARCO/ARCOLINUX/arcolinux-app-dev/usr/share/arcolinux-app/packages/arcolinux-mirrorlist/*
+cp -v /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-mirror*pkg.tar.zst $workdir/usr/share/arcolinux-app/packages/arcolinux-mirrorlist
+
+#pacman.conf
+echo "get the pacman.conf from ArchLinux"
+wget https://gitlab.archlinux.org/archlinux/archiso/-/raw/master/configs/releng/pacman.conf -O $workdir/usr/share/arcolinux-app/data/arch/pacman.conf
+
+echo "get the pacman.conf from ArcoLinux"
+wget https://raw.githubusercontent.com/arcolinux/arcolinuxl-iso/master/archiso/airootfs/etc/pacman.conf -O $workdir/usr/share/arcolinux-app/data/arco/pacman.conf
+
+
+echo "get the pacman.conf from EOS"
+wget https://raw.githubusercontent.com/endeavouros-team/EndeavourOS-ISO/main/airootfs/etc/pacman.conf -O $workdir/usr/share/arcolinux-app/data/eos/pacman.conf
+
+echo "get the pacman.conf from EOS"
+wget https://gitlab.com/garuda-linux/tools/garuda-tools/-/raw/master/data/pacman-multilib.conf -O $workdir/usr/share/arcolinux-app/data/garuda/pacman.conf
 
 
 # Below command will backup everything inside the project folder
