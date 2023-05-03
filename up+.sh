@@ -42,7 +42,7 @@ rm -v $workdir/usr/share/arcolinux-app/packages/arcolinux-keyring/*
 cp -v /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-keyring*pkg.tar.zst $workdir/usr/share/arcolinux-app/packages/arcolinux-keyring
 
 echo "Mirror from ArcoLinux"
-rm -v /home/erik/ARCO/ARCOLINUX/arcolinux-app/usr/share/arcolinux-app/packages/arcolinux-mirrorlist/*
+rm -v $workdir/usr/share/arcolinux-app/packages/arcolinux-mirrorlist/*
 cp -v /home/erik/ARCO/ARCOLINUX-REPO/arcolinux_repo/x86_64/arcolinux-mirror*pkg.tar.zst $workdir/usr/share/arcolinux-app/packages/arcolinux-mirrorlist
 
 #pacman.conf
