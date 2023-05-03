@@ -390,35 +390,35 @@ class Main(Gtk.Window):
             + "\n",
         )
 
-    def on_arco_key_mirror_clicked(self, widget):
-        if self.arco_key_mirror._value == 1:
-            print("[INFO] : Let's install the ArcoLinux keys and mirrors")
-            fn.create_actions_log(
-                launchtime,
-                "[INFO] %s Let's install the ArcoLinux keys and mirrors" % str(now)
-                + "\n",
-            )
-            fn.install_arcolinux_key_mirror(self)
-            fn.add_repos()
-            self.arco_key_mirror.set_label("Remove")
-            self.arco_key_mirror._value = 2
-        else:
-            print("[INFO] : Let's remove the ArcoLinux keys and mirrors")
-            fn.create_actions_log(
-                launchtime,
-                "[INFO] %s Let's remove the ArcoLinux keys and mirrors" % str(now)
-                + "\n",
-            )
-            fn.remove_arcolinux_key_mirror(self)
-            print("[INFO] : Removing the ArcoLinux repos in /etc/pacman.conf")
-            fn.create_actions_log(
-                launchtime,
-                "[INFO] %s  Removing the ArcoLinux repos in /etc/pacman.conf" % str(now)
-                + "\n",
-            )
-            fn.remove_repos()
-            self.arco_key_mirror.set_label("Install")
-            self.arco_key_mirror._value = 1
+    def on_arco_key_mirror_clicked_install(self, widget):
+        print("[INFO] : Let's install the ArcoLinux keys and mirrors")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Let's install the ArcoLinux keys and mirrors" % str(now) + "\n",
+        )
+        print("[INFO] : Installing the ArcoLinux repos in /etc/pacman.conf")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s  Installing the ArcoLinux repos in /etc/pacman.conf" % str(now)
+            + "\n",
+        )
+        fn.install_arcolinux_key_mirror(self)
+        fn.add_repos()
+
+    def on_arco_key_mirror_clicked_remove(self, widget):
+        print("[INFO] : Let's remove the ArcoLinux keys and mirrors")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Let's remove the ArcoLinux keys and mirrors" % str(now) + "\n",
+        )
+        fn.remove_arcolinux_key_mirror(self)
+        print("[INFO] : Removing the ArcoLinux repos in /etc/pacman.conf")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s  Removing the ArcoLinux repos in /etc/pacman.conf" % str(now)
+            + "\n",
+        )
+        fn.remove_repos()
 
     def on_pacman_reset_local_clicked(self, widget):
         if fn.path.isfile(fn.pacman_conf + ".bak"):
@@ -428,7 +428,8 @@ class Main(Gtk.Window):
             )
             fn.create_actions_log(
                 launchtime,
-                "[INFO] %s Let's install the ArcoLinux keys and mirrors" % str(now)
+                "[INFO] %s We have used /etc/pacman.conf.bak to reset /etc/pacman.conf"
+                % str(now)
                 + "\n",
             )
 

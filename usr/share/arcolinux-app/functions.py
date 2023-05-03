@@ -185,10 +185,10 @@ def install_arcolinux_key_mirror(self):
     file = listdir(pathway)
 
     try:
-        command = "pacman -U " + pathway + str(file).strip("[]'") + " --noconfirm"
-        print("[INFO] : " + command)
+        command1 = "pacman -U " + pathway + str(file).strip("[]'") + " --noconfirm"
+        print("[INFO] : " + command1)
         subprocess.call(
-            command.split(" "),
+            command1.split(" "),
             shell=False,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -200,10 +200,10 @@ def install_arcolinux_key_mirror(self):
     pathway = base_dir + "/packages/arcolinux-mirrorlist/"
     file = listdir(pathway)
     try:
-        command = "pacman -U " + pathway + str(file).strip("[]'") + " --noconfirm"
-        print("[INFO] : " + command)
+        command2 = "pacman -U " + pathway + str(file).strip("[]'") + " --noconfirm"
+        print("[INFO] : " + command2)
         subprocess.call(
-            command.split(" "),
+            command2.split(" "),
             shell=False,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -440,23 +440,6 @@ def remove_repos():
 # =====================================================
 #                     LOGGING
 # =====================================================
-
-
-def create_packages_log():
-    now = datetime.now().strftime("%H:%M:%S")
-    print("[INFO] " + now + " Creating a log file in /var/log/sofirem/software")
-    destination = log_dir + "arcolinux-app-log-" + launchtime
-    command = "sudo pacman -Q > " + destination
-    subprocess.call(
-        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    )
-    create_actions_log(
-        launchtime,
-        "[INFO] %s Creating a log file in /var/log/sofirem/software " % now + "\n",
-    )
-    # GLib.idle_add(
-    #     show_in_app_notification, "is already installed - nothing to do", "test"
-    # )
 
 
 def create_actions_log(launchtime, message):

@@ -166,21 +166,21 @@ def GUI(self, Gtk, GdkPixbuf, fn):
 
     lbl_arco_key_mirror = Gtk.Label(label="Install ArcoLinux Keys and Mirrorlist: ")
 
-    if not (
-        fn.check_package_installed("arcolinux-keyring")
-        or fn.check_package_installed("arcolinux-mirrorlist-git")
-    ):
-        self.arco_key_mirror = Gtk.Button(label="Install")
-        self.arco_key_mirror._value = 1
-    else:
-        self.arco_key_mirror = Gtk.Button(label="Remove")
-        self.arco_key_mirror._value = 2
+    self.arco_key_mirror_install = Gtk.Button(label="Install")
+    self.arco_key_mirror_install.set_size_request(280, 0)
+    self.arco_key_mirror_install.connect(
+        "clicked", self.on_arco_key_mirror_clicked_install
+    )
 
-    self.arco_key_mirror.set_size_request(280, 0)
-    self.arco_key_mirror.connect("clicked", self.on_arco_key_mirror_clicked)
+    self.arco_key_mirror_remove = Gtk.Button(label="Remove")
+    self.arco_key_mirror_remove.set_size_request(280, 0)
+    self.arco_key_mirror_remove.connect(
+        "clicked", self.on_arco_key_mirror_clicked_remove
+    )
 
     hbox4.pack_start(lbl_arco_key_mirror, False, False, 0)
-    hbox4.pack_end(self.arco_key_mirror, False, False, 0)
+    hbox4.pack_end(self.arco_key_mirror_remove, False, False, 0)
+    hbox4.pack_end(self.arco_key_mirror_install, False, False, 0)
 
     # ======================================================================
     #                           HBOX 7
