@@ -37,35 +37,35 @@ print("-------------------------------------------------------------------------
 
 fn.create_actions_log(
     launchtime,
-    "[INFO] %s [INFO] : pkgver = pkgversion" % str(now) + "\n",
+    "[INFO] %s pkgver = pkgversion" % str(now) + "\n",
 )
 fn.create_actions_log(
     launchtime,
-    "[INFO] %s [INFO] : pkgver = pkgrelease" % str(now) + "\n",
+    "[INFO] %s pkgrel = pkgrelease" % str(now) + "\n",
 )
 
 # making sure the tool follows a dark or light theme
 if not fn.path.isdir("/root/.config/"):
     try:
-        fn.makedirs("/root/.config", 0o766)
+        fn.mkdir("/root/.config", 0o766)
     except Exception as error:
         print(error)
 
 if not fn.path.isdir("/root/.config/gtk-3.0"):
     try:
-        fn.makedirs("/root/.config/gtk-3.0", 0o766)
+        fn.mkdir("/root/.config/gtk-3.0", 0o766)
     except Exception as error:
         print(error)
 
 if not fn.path.isdir("/root/.config/gtk-4.0"):
     try:
-        fn.makedirs("/root/.config/gtk-4.0", 0o766)
+        fn.mkdir("/root/.config/gtk-4.0", 0o766)
     except Exception as error:
         print(error)
 
 if not fn.path.isdir("/root/.config/xsettingsd"):
     try:
-        fn.makedirs("/root/.config/xsettingsd", 0o766)
+        fn.mkdir("/root/.config/xsettingsd", 0o766)
     except Exception as error:
         print(error)
 
