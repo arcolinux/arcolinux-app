@@ -20,6 +20,9 @@ global launchtime
 # launchtime = file in /var/log
 launchtime = now.strftime("%Y-%m-%d-%H-%M-%S")
 
+if not fn.path.exists(fn.log_dir):
+    fn.mkdir(fn.log_dir)
+
 fn.create_actions_log(
     launchtime,
     "[INFO] %s App Started" % str(now) + "\n",
@@ -94,20 +97,11 @@ if fn.path.isfile(fn.mirrorlist):
             print(error)
 
 
-# make directory if it doesn't exist
-if not fn.path.isdir(fn.log_dir):
-    try:
-        fn.mkdir(fn.log_dir)
-    except Exception as error:
-        print(error)
-now = datetime.now().strftime("%H:%M:%S")
-
-
 class Main(Gtk.Window):
     def __init__(self):
         super(Main, self).__init__(title="ArcoLinux App")
         self.set_border_width(10)
-        self.set_default_size(850, 600)
+        self.set_default_size(900, 650)
         self.set_icon_from_file(fn.os.path.join(fn.base_dir, "images/arcolinux.png"))
         self.set_position(Gtk.WindowPosition.CENTER)
 
