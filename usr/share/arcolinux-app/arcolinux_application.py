@@ -13,7 +13,7 @@ import splash
 
 gi.require_version("Gtk", "3.0")
 
-from gi.repository import GdkPixbuf, Gtk  # noqa
+from gi.repository import GdkPixbuf, Gtk, GLib  # noqa
 
 now = datetime.now()
 global launchtime
@@ -104,6 +104,7 @@ class Main(Gtk.Window):
         self.set_default_size(900, 650)
         self.set_icon_from_file(fn.os.path.join(fn.base_dir, "images/arcolinux.png"))
         self.set_position(Gtk.WindowPosition.CENTER)
+        self.timeout_id = None
 
         # splash screen
         splScr = splash.splashScreen()
@@ -281,6 +282,12 @@ class Main(Gtk.Window):
         print("[INFO] : Move folder to home directory")
         try:
             fn.shutil.copytree(path_dir, destination, dirs_exist_ok=True)
+            GLib.idle_add(
+                fn.show_in_app_notification,
+                self,
+                "The creation of the ArcoLinux iso is finished",
+                False,
+            )
         except Exception as error:
             print(error)
 
@@ -321,6 +328,13 @@ class Main(Gtk.Window):
         fn.remove_dir(self, fn.base_dir + "/work")
         fn.remove_dir(self, "/root/work")
 
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "The creation of the Arch Linux iso is finished",
+            False,
+        )
+
     def on_clean_pacman_cache_clicked(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Let's clean the pacman cache")
@@ -343,6 +357,12 @@ class Main(Gtk.Window):
                 launchtime,
                 "[INFO] %s Pacman cache cleaned" % str(now) + "\n",
             )
+            GLib.idle_add(
+                fn.show_in_app_notification,
+                self,
+                "Pacman cache cleaned",
+                False,
+            )
         except Exception as error:
             print(error)
 
@@ -357,6 +377,12 @@ class Main(Gtk.Window):
         package = "alacritty"
         fn.install_package(self, package)
         fn.run_script_alacritty_hold(self, command)
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "Let's fix the keys of Arch Linux",
+            False,
+        )
 
     def on_get_nemesis_clicked(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
@@ -378,6 +404,7 @@ class Main(Gtk.Window):
             fn.shutil.copytree(path_dir, destination, dirs_exist_ok=True)
         except Exception as error:
             print(error)
+
         print("[INFO] : We saved the scripts to ~/DATA/arcolinux-nemesis")
         fn.create_actions_log(
             launchtime,
@@ -385,6 +412,12 @@ class Main(Gtk.Window):
             + "\n",
         )
         fn.permissions(destination)
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "We installed the ArcoLinux Nemesis scripts in ~/DATA",
+            False,
+        )
 
     def on_arch_server_clicked(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
@@ -415,6 +448,12 @@ class Main(Gtk.Window):
             % str(now)
             + "\n",
         )
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "We changed the content of your /etc/pacman.d/mirrorlist",
+            False,
+        )
 
     def on_arco_key_mirror_clicked_install(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
@@ -431,6 +470,12 @@ class Main(Gtk.Window):
         )
         fn.install_arcolinux_key_mirror(self)
         fn.add_repos()
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "Installing the ArcoLinux repos in /etc/pacman.conf",
+            False,
+        )
 
     def on_arco_key_mirror_clicked_remove(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
@@ -447,6 +492,12 @@ class Main(Gtk.Window):
             + "\n",
         )
         fn.remove_repos()
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "Removing the ArcoLinux repos in /etc/pacman.conf",
+            False,
+        )
 
     def on_pacman_reset_local_clicked(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
@@ -462,6 +513,12 @@ class Main(Gtk.Window):
                 + "\n",
             )
             fn.pacman_safeguard()
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "We have used /etc/pacman.conf.bak to reset /etc/pacman.conf",
+            False,
+        )
 
     def on_pacman_reset_cached_clicked(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
@@ -478,6 +535,12 @@ class Main(Gtk.Window):
             "[INFO] %s We have used the cached pacman.conf" % str(now) + "\n",
         )
         fn.pacman_safeguard()
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "We have used the cached pacman.conf",
+            False,
+        )
 
     def on_find_path(self, widget):
         print("path")
@@ -526,6 +589,12 @@ class Main(Gtk.Window):
                 "[INFO] %s File: " % str(now) + path + "\n",
             )
             fn.install_packages_path(self, self.packages_path.get_text())
+            GLib.idle_add(
+                fn.show_in_app_notification,
+                self,
+                "Pakages installed from selected file",
+                False,
+            )
         else:
             print("[INFO] : First select a file")
             self.packages_path.set_text("Choose a file first")

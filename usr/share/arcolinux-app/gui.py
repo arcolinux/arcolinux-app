@@ -7,6 +7,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     # ======================================================================
     #                   CONTAINERS
     # ======================================================================
+    hbox_revealer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
     vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
@@ -22,6 +23,28 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox8 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_message = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+
+    # =======================================================
+    #                       App Notifications
+    # =======================================================
+
+    hbox_revealer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+
+    self.notification_revealer = Gtk.Revealer()
+    self.notification_revealer.set_reveal_child(False)
+
+    self.notification_label = Gtk.Label()
+
+    pb_panel = GdkPixbuf.Pixbuf().new_from_file(fn.base_dir + "/images/panel.png")
+    panel = Gtk.Image().new_from_pixbuf(pb_panel)
+
+    overlayFrame = Gtk.Overlay()
+    overlayFrame.add(panel)
+    overlayFrame.add_overlay(self.notification_label)
+
+    self.notification_revealer.add(overlayFrame)
+
+    hbox_revealer.pack_start(self.notification_revealer, True, False, 0)
 
     # ======================================================================
     #                           HBOX_LOGO
@@ -245,6 +268,7 @@ Do not use it to build an ISO!</span>'
     scrolledWindow = Gtk.ScrolledWindow()
     self.add(scrolledWindow)
 
+    vbox.pack_start(hbox_revealer, False, False, 20)  # LOGO
     vbox.pack_start(hbox_logo, False, False, 20)  # LOGO
     vbox.pack_start(hbox0, False, False, 0)
     vbox.pack_start(hbox1, False, False, 0)

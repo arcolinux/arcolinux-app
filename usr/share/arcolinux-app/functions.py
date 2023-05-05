@@ -10,6 +10,7 @@ from os import getlogin, listdir, mkdir, path, rmdir
 from pathlib import Path
 
 import psutil
+from gi.repository import GLib
 from distro import id
 
 DEBUG = False
@@ -478,3 +479,35 @@ def install_packages_path(self, path):
         line = line.strip("\n")
         if not line.find("#") != -1:
             install_package(self, line)
+
+
+# =====================================================
+#               NOTIFICATIONS
+# =====================================================
+
+
+def show_in_app_notification(self, message, err):
+    if self.timeout_id is not None:
+        GLib.source_remove(self.timeout_id)
+        self.timeout_id = None
+
+    if err == True:
+        self.notification_label.set_markup(
+            '<span background="yellow" foreground="black">' + message + "</span>"
+        )
+    else:
+        self.notification_label.set_markup(
+            '<span foreground="white">' + message + "</span>"
+        )
+    self.notification_revealer.set_reveal_child(True)
+    self.timeout_id = GLib.timeout_add(3000, timeOut, self)
+
+
+def timeOut(self):
+    close_in_app_notification(self)
+
+
+def close_in_app_notification(self):
+    self.notification_revealer.set_reveal_child(False)
+    GLib.source_remove(self.timeout_id)
+    self.timeout_id = None
