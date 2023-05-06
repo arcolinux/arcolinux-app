@@ -118,13 +118,6 @@ class Main(Gtk.Window):
     def on_close_clicked(self, widget):
         Gtk.main_quit()
 
-    def on_save_clicked(self, widget):
-        t = fn.threading.Thread(
-            target=fn.set_config, args=(self.fileSystem.get_active_text(),)
-        )
-        t.daemon = True
-        t.start()
-
     def on_create_arco_clicked(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
         choice = self.iso_choices.get_active_text()
@@ -307,8 +300,12 @@ class Main(Gtk.Window):
         fn.install_package(self, package)
 
         # making sure we start with a clean slate
-        fn.remove_dir(self, fn.base_dir + "/work")
-        fn.remove_dir(self, "/root/work")
+        if fn.path_check(fn.base_dir + "/work"):
+            fn.remove_dir(self, "fn.base_dir" + "/work")
+            print("[INFO] : Cleanup - Removing : " + fn.base_dir + "/work")
+        if fn.path_check("/root/work"):
+            fn.remove_dir(self, "/root/work")
+            print("[INFO] : Cleanup - Removing : /root/work")
 
         # starting the build script
         command = "mkarchiso -v -o " + fn.home + " /usr/share/archiso/configs/releng/"
@@ -325,8 +322,12 @@ class Main(Gtk.Window):
         print("[INFO] : Check your home directory for the iso")
 
         # making sure we start with a clean slate
-        fn.remove_dir(self, fn.base_dir + "/work")
-        fn.remove_dir(self, "/root/work")
+        if fn.path_check(fn.base_dir + "/work"):
+            fn.remove_dir(self, "fn.base_dir" + "/work")
+            print("[INFO] : Cleanup - Removing : " + fn.base_dir + "/work")
+        if fn.path_check("/root/work"):
+            fn.remove_dir(self, "/root/work")
+            print("[INFO] : Cleanup - Removing : /root/work")
 
         GLib.idle_add(
             fn.show_in_app_notification,
@@ -398,7 +399,7 @@ class Main(Gtk.Window):
         GLib.idle_add(
             fn.show_in_app_notification,
             self,
-            "Creation of probe link finished",
+            "Creation of probe link is finished",
             False,
         )
 

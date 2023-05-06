@@ -10,8 +10,8 @@ from os import getlogin, listdir, mkdir, path, rmdir
 from pathlib import Path
 
 import psutil
-from gi.repository import GLib
 from distro import id
+from gi.repository import GLib
 
 DEBUG = False
 
