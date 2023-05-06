@@ -21,6 +21,7 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox8 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox9 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_message = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox_buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
@@ -172,6 +173,18 @@ def GUI(self, Gtk, GdkPixbuf, fn):
     hbox2.pack_end(self.fix_arch, False, False, 0)
 
     # ======================================================================
+    #                           HBOX 9
+    # ======================================================================
+
+    lbl_probe = Gtk.Label(label="Provide probe link: ")
+    self.probe = Gtk.Button(label="Get probe link")
+    self.probe.set_size_request(280, 0)
+    self.probe.connect("clicked", self.on_probe_clicked)
+
+    hbox9.pack_start(lbl_probe, False, False, 0)
+    hbox9.pack_end(self.probe, False, False, 0)
+
+    # ======================================================================
     #                           HBOX 3
     # ======================================================================
 
@@ -275,6 +288,7 @@ Do not use it to build an ISO!</span>'
     vbox.pack_start(hbox5, False, False, 0)
     vbox.pack_start(hbox6, False, False, 0)
     vbox.pack_start(hbox2, False, False, 0)
+    vbox.pack_start(hbox9, False, False, 0)
     vbox.pack_start(hbox3, False, False, 0)
     vbox.pack_start(hbox4, False, False, 0)
     vbox.pack_start(hbox7, False, False, 0)

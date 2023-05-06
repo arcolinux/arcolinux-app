@@ -384,6 +384,24 @@ class Main(Gtk.Window):
             False,
         )
 
+    def on_probe_clicked(self, widget):
+        now = datetime.now().strftime("%H:%M:%S")
+        print("[INFO] : Let's create the probe link")
+        fn.create_actions_log(
+            launchtime,
+            "[INFO] %s Let's create the probe link" % str(now) + "\n",
+        )
+        command = fn.base_dir + "/scripts/probe"
+        package = "hw-probe"
+        fn.install_package(self, package)
+        fn.run_script_alacritty_hold(self, command)
+        GLib.idle_add(
+            fn.show_in_app_notification,
+            self,
+            "Creation of probe link finished",
+            False,
+        )
+
     def on_get_nemesis_clicked(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
         print("[INFO] : Get the ArcoLinux nemesis scripts")
@@ -592,7 +610,7 @@ class Main(Gtk.Window):
             GLib.idle_add(
                 fn.show_in_app_notification,
                 self,
-                "Pakages installed from selected file",
+                "Packages installed from selected file",
                 False,
             )
         else:
