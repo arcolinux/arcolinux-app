@@ -117,6 +117,17 @@ class Main(Gtk.Window):
 
     def on_close_clicked(self, widget):
         Gtk.main_quit()
+        print(
+            "---------------------------------------------------------------------------"
+        )
+        print("Thanks for using the ArcoLinux Application")
+        print("We hope you enjoyed the Youtube tutorials")
+        print(
+            "https://www.youtube.com/playlist?list=PLlloYVGq5pS63vf2ksZntZmWwiJK_gtFt"
+        )
+        print(
+            "---------------------------------------------------------------------------"
+        )
 
     def on_create_arco_clicked(self, widget):
         now = datetime.now().strftime("%H:%M:%S")
